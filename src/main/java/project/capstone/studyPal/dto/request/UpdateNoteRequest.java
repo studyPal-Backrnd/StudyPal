@@ -1,0 +1,14 @@
+package project.capstone.studyPal.dto.request;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@AllArgsConstructor
+@Getter
+public class UpdateNoteRequest {
+    private Long noteId;
+    private String updateTitle;
+    private String updateBody;
+}
