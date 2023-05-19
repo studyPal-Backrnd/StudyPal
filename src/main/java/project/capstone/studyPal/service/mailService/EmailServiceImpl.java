@@ -4,23 +4,24 @@ import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import project.capstone.studyPal.config.app.MailConfig;
+import project.capstone.studyPal.dto.request.MailCredential;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @AllArgsConstructor
 @Service
 public class EmailServiceImpl implements EmailService {
-
-    private final MailConfig mailConfig;
-
     private final JavaMailSender javaMailSender;
 
     @Override
-    public void sendMail() {
+    public void sendMail(MailCredential mailCredential) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom("owoblowpeter@gmail.com");
-        simpleMailMessage.setTo("peterowolabi2407@gmail.com");
-        simpleMailMessage.setSubject("Activate Account");
-        simpleMailMessage.setText("To activate your Study Pal account enter the following digits on your web browser");
+        simpleMailMessage.setFrom("co.studypal@gmail.com");
+        simpleMailMessage.setReplyTo("co.studypal@gmail.com");
+        simpleMailMessage.setTo(mailCredential.getRecipientEmail());
+        simpleMailMessage.setSubject(mailCredential.getSubject());
+        simpleMailMessage.setText(mailCredential.getText());
 
         javaMailSender.send(simpleMailMessage);
     }

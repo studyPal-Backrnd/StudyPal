@@ -1,10 +1,10 @@
 package project.capstone.studyPal.service.mailService;
 
-import project.capstone.studyPal.dto.request.SendMailRequest;
+import project.capstone.studyPal.dto.request.MailCredential;
 
 public interface EmailService {
 
 //    String sendMail(SendMailRequest mailRequest);
 
-    void sendMail();
+    void sendMail(MailCredential mailCredential);
 }

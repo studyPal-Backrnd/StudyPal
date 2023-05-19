@@ -19,10 +19,10 @@ class AppUserServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        dto.setEmail("peterowolabi2407@gmail.com");
-        dto.setPassword("testPassword");
-        dto.setFirstName("Peter");
-        dto.setLastName("Owolabi");
+        dto.setEmail("osodavid001@gmail.com");
+        dto.setPassword("testPassword34!");
+        dto.setFirstName("David");
+        dto.setLastName("Oso");
 
     }
 

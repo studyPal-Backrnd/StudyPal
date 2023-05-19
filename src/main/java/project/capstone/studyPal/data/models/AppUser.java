@@ -23,6 +23,7 @@ public class AppUser {
     @NotNull
     private String password;
     @NotNull
+    @Column(unique = true)
     private String email;
     @NotNull
     private String firstName;
@@ -34,9 +35,9 @@ public class AppUser {
     @OneToMany
     private List<Note> notes;
     @OneToOne
-    private Shelf shelf;
+    private Shelf shelf = new Shelf();
     @OneToMany
     private List<StudyPlan> studyPlans;
-//    @NotNull(message = "Image cannot be null")
+    @NotNull(message = "Image cannot be null")
     private String profileImage;
 }
