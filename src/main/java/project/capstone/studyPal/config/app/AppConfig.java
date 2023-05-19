@@ -10,6 +10,9 @@ import project.capstone.studyPal.dto.request.MailCredential;
 @Configuration
 public class AppConfig {
 
+    @Value("$()")
+    private String appName;
+
     @Value("${mailSendingName}")
     private String hostMailName;
 
