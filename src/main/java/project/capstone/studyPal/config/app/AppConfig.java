@@ -1,17 +1,17 @@
 package project.capstone.studyPal.config.app;
 
-import project.capstone.studyPal.data.models.MailCredential;
-import project.capstone.studyPal.dto.request.SendMailRequest;
 import com.cloudinary.Cloudinary;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.javamail.JavaMailSender;
-//import org.springframework.mail.javamail.JavaMailSender;
+import project.capstone.studyPal.dto.request.MailCredential;
 
 @Configuration
 public class AppConfig {
+
+    @Value("$()")
+    private String appName;
 
     @Value("${mailSendingName}")
     private String hostMailName;
@@ -19,20 +19,14 @@ public class AppConfig {
     @Value("${spring.mail.username}")
     private String hostMailAddress;
 
-
-    @Bean
-    public MailConfig mailConfig() {
-        return new MailConfig(mailApiKey, mailUrl);
-    }
-
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
     @Bean
-    public MailCredential mailCredential() {
-        return new MailCredential();
+    public MailConfig mailConfig() {
+        return new MailConfig(hostMailName, hostMailAddress);
     }
 
     @Bean
@@ -41,8 +35,8 @@ public class AppConfig {
     }
 
     @Bean
-    public SendMailRequest sendMailRequest() {
-        return new SendMailRequest();
+    public MailCredential mailCredential() {
+        return new MailCredential();
     }
 
 }

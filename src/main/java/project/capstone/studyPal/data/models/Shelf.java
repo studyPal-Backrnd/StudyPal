@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,5 +18,5 @@ public class Shelf {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToMany
-    private List<ResourceMaterial> resourceMaterials;
+    private List<ResourceMaterial> resourceMaterials = new ArrayList<>();
 }
