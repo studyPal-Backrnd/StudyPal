@@ -1,14 +1,13 @@
 package project.capstone.studyPal.service.studyPalService.noteService;
 
-import project.capstone.studyPal.data.models.AppUser;
 import project.capstone.studyPal.data.models.Note;
 import project.capstone.studyPal.dto.request.CreateNoteRequest;
 import project.capstone.studyPal.dto.request.UpdateNoteRequest;
+import project.capstone.studyPal.exception.NotFoundException;
 
 public interface NoteService {
-    AppUser getUserById(Long userId);
-    String createNote(CreateNoteRequest createNoteRequest);
-    Note getNoteById(Long noteId);
-    String updateNote(UpdateNoteRequest updateNoteRequest);
-    String deleteNoteById(Long noteId);
+   String createNote(CreateNoteRequest createNoteRequest);
+   Note getNoteById(Long noteId)throws NotFoundException;
+   String updateNote(UpdateNoteRequest updateNoteRequest);
+   String deleteNoteById(Long noteId);
 }
