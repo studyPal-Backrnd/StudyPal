@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+//import org.hibernate.annotations.CreationTimestamp;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +30,7 @@ public class AppUser {
     private String firstName;
     @NotNull
     private String lastName;
-    @CreationTimestamp
+//    @CreationTimeStamp
     private final LocalDateTime createdDate = LocalDateTime.now();
     private boolean isEnabled = false;
     @OneToMany

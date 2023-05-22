@@ -82,6 +82,13 @@
 			<version>3.0.2</version>
 		</dependency>
 		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.9.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>com.cloudinary</groupId>
 			<artifactId>cloudinary-http44</artifactId>
 			<version>1.33.0</version>
@@ -127,6 +134,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+
 		<repository>
 			<id>spring-snapshots</id>
 			<name>Spring Snapshots</name>

@@ -17,6 +17,7 @@ import project.capstone.studyPal.dto.request.UserRegisterRequest;
 import project.capstone.studyPal.dto.response.UserResponse;
 import project.capstone.studyPal.exception.ImageUploadException;
 import project.capstone.studyPal.exception.LogicException;
+import project.capstone.studyPal.exception.NotFoundException;
 import project.capstone.studyPal.exception.RegistrationException;
 import project.capstone.studyPal.service.cloudService.CloudService;
 import project.capstone.studyPal.service.mailService.EmailService;
@@ -41,6 +42,12 @@ public class UserServiceImpl implements UserService {
         AppUser foundUser =  userRepository.findByEmail(email);
         if (foundUser == null) throw new LogicException(String.format("Passenger with email %s not found", email));
         return foundUser;
+    }
+
+    @Override
+    public AppUser getUserById(Long userId) throws NotFoundException {
+        return userRepository.findById(userId).orElseThrow(
+                ()-> new NotFoundException("User not found.."));
     }
 
     @Override

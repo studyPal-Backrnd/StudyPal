@@ -6,7 +6,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import project.capstone.studyPal.dto.request.MailCredential;
+import project.capstone.studyPal.service.studyPalService.noteService.NoteService;
+import project.capstone.studyPal.service.studyPalService.noteService.NoteServiceImpl;
 
 @Configuration
 public class AppConfig {
@@ -21,6 +25,10 @@ public class AppConfig {
     private String booksUrl;
     @Value("${google.books.api.key}")
     private String booksApiKey;
+
+    private String hostMailName;
+
+    private String hostMailAddress;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -43,5 +51,8 @@ public class AppConfig {
     public MailCredential mailCredential() {
         return new MailCredential();
     }
-
+    @Bean
+    public JavaMailSender javaMailSender(){
+        return new JavaMailSenderImpl();
+    }
 }
