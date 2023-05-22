@@ -5,6 +5,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import project.capstone.studyPal.dto.request.MailCredential;
+import project.capstone.studyPal.util.StudyPalUtils;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -17,8 +18,8 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendMail(MailCredential mailCredential) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom("co.studypal@gmail.com");
-        simpleMailMessage.setReplyTo("co.studypal@gmail.com");
+        simpleMailMessage.setFrom(StudyPalUtils.STUDY_PAL_EMAIL_ADDRESS);
+        simpleMailMessage.setReplyTo(StudyPalUtils.STUDY_PAL_EMAIL_ADDRESS);
         simpleMailMessage.setTo(mailCredential.getRecipientEmail());
         simpleMailMessage.setSubject(mailCredential.getSubject());
         simpleMailMessage.setText(mailCredential.getText());

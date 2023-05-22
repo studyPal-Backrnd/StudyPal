@@ -38,6 +38,6 @@ public class AppUser {
     private Shelf shelf = new Shelf();
     @OneToMany
     private List<StudyPlan> studyPlans;
-    @NotNull(message = "Image cannot be null")
+//    @NotNull(message = "Image cannot be null")
     private String profileImage;
 }

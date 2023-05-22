@@ -9,17 +9,21 @@ import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import project.capstone.studyPal.data.models.AppUser;
 import project.capstone.studyPal.dto.request.MailCredential;
 import project.capstone.studyPal.data.repository.UserRepository;
 import project.capstone.studyPal.dto.request.UserRegisterRequest;
 import project.capstone.studyPal.dto.response.UserResponse;
+import project.capstone.studyPal.exception.ImageUploadException;
 import project.capstone.studyPal.exception.LogicException;
 import project.capstone.studyPal.exception.RegistrationException;
+import project.capstone.studyPal.service.cloudService.CloudService;
 import project.capstone.studyPal.service.mailService.EmailService;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 
 @Service
@@ -29,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private MailCredential mailCredential;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final CloudService cloudService;
     private final ModelMapper mapper;
 
     @Override
@@ -102,6 +107,19 @@ public class UserServiceImpl implements UserService {
         } catch (JsonPatchException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public void uploadProfileImage(MultipartFile profileImage, Long userId) throws ImageUploadException {
+        Optional<AppUser> user = userRepository.findById(userId);
+
+        String imageUrl = cloudService.upload(profileImage);
+        user.ifPresent(appUser -> updateProfilePicture(imageUrl, appUser));
+
+    }
+
+    private void updateProfilePicture(String imageUrl, @NotNull AppUser appUser) {
+        appUser.setProfileImage(imageUrl);
     }
 
     private void sendVerificationMail(String email) {

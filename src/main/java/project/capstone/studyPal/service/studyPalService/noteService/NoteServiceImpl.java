@@ -7,7 +7,7 @@ import project.capstone.studyPal.data.repository.UserRepository;
 import project.capstone.studyPal.dto.request.CreateNoteRequest;
 import project.capstone.studyPal.dto.request.UpdateNoteRequest;
 import project.capstone.studyPal.exception.NotFoundException;
-import project.capstone.studyPal.service.studyPalService.cloudService.CloudService;
+import project.capstone.studyPal.service.cloudService.CloudService;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;

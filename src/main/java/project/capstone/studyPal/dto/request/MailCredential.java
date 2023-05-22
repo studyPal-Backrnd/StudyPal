@@ -1,16 +1,13 @@
 package project.capstone.studyPal.dto.request;
 
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
-import project.capstone.studyPal.config.app.AppConfig;
-import project.capstone.studyPal.config.app.MailConfig;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class MailCredential {
-
 
     private String recipientEmail;
     private String token;
