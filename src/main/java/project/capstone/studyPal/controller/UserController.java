@@ -28,7 +28,7 @@ public class UserController {
  return new ResponseEntity<>(userService.verifyAccount(appUser, verificationCode), HttpStatus.OK);
 }
 
-@GetMapping("login")
+@PostMapping("login")
  public ResponseEntity <UserResponse> loginToAccount(@RequestParam String email, @RequestParam String password) throws LogicException {
  return new ResponseEntity<>(userService.login(email, password),  HttpStatus.ACCEPTED);
 }

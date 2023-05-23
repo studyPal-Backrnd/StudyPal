@@ -17,6 +17,6 @@ public class Shelf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ResourceMaterial> resourceMaterials = new ArrayList<>();
 }

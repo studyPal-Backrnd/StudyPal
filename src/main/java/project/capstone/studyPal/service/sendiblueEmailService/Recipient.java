@@ -1,15 +1,14 @@
-package project.capstone.studyPal.dto.request;
-
+package project.capstone.studyPal.service.sendiblueEmailService;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
-@NoArgsConstructor
-@Setter
 @Getter
+@Setter
+@Builder
 public class Recipient {
     private String name;
     private String email;

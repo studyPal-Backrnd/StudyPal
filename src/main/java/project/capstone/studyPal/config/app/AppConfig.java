@@ -2,6 +2,7 @@ package project.capstone.studyPal.config.app;
 
 import com.cloudinary.Cloudinary;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,21 +11,19 @@ import project.capstone.studyPal.dto.request.MailCredential;
 
 @Configuration
 public class AppConfig {
-//    @Value("${mailSendingName}")
-    private String hostMailName;
-
-    private String hostMailAddress;
+    @Value("${mail.api.key}")
+    private String mailApiKey;
+    @Value("${sendinblue.mail.url}")
+    private String mailUrl;
+    @Bean
+    public MailConfig mailConfig(){
+        return new MailConfig(mailApiKey, mailUrl);
+    }
 
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-
-//    @Bean
-//    public MailConfig mailConfig() {
-//        return new MailConfig(hostMailName, hostMailAddress);
-//    }
-
     @Bean
     public Cloudinary cloudinary() {
         return new Cloudinary();
@@ -38,4 +37,5 @@ public class AppConfig {
     public JavaMailSender javaMailSender(){
         return new JavaMailSenderImpl();
     }
+
 }

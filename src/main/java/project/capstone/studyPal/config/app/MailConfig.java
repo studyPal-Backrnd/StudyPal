@@ -1,14 +1,14 @@
 package project.capstone.studyPal.config.app;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
+@Setter
 public class MailConfig {
-    private final String hostMailName;
-    private final String hostMailAddress;
-    public MailConfig(String hostMailName, String hostMailAddress) {
-        this.hostMailName = hostMailName;
-        this.hostMailAddress = hostMailAddress;
-    }
+   private String apiKey;
+   private String mailUrl;
 }

@@ -18,6 +18,8 @@ import project.capstone.studyPal.exception.LogicException;
 import project.capstone.studyPal.exception.NotFoundException;
 import project.capstone.studyPal.exception.RegistrationException;
 import project.capstone.studyPal.service.mailService.EmailService;
+import project.capstone.studyPal.service.sendiblueEmailService.EmailNotificationRequest;
+import project.capstone.studyPal.service.sendiblueEmailService.SendiblueMailService;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;

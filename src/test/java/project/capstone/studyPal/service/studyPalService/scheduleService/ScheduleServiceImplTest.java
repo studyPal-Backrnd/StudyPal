@@ -19,11 +19,11 @@ class ScheduleServiceImplTest {
     @BeforeEach
     void setUp() {
         createScheduleRequest = new CreateScheduleRequest();
-        createScheduleRequest.setPurpose("read Dietel dietel chapter 1");
-        createScheduleRequest.setStartDate("20/05/2023");
-        createScheduleRequest.setEndDate("20/05/2023");
-        createScheduleRequest.setStartTime(LocalTime.now().plusHours(1));
-        createScheduleRequest.setEndTime(LocalTime.now().plusHours(1).plusMinutes(3));
+//        createScheduleRequest.setPurpose("read Dietel dietel chapter 1");
+//        createScheduleRequest.setStartDate("20/05/2023");
+//        createScheduleRequest.setEndDate("20/05/2023");
+//        createScheduleRequest.setStartTime(LocalTime.now().plusHours(1));
+//        createScheduleRequest.setEndTime(LocalTime.now().plusHours(1).plusMinutes(3));
     }
 
     @Test
