@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse register(UserRegisterRequest userDto) {
+    public void register(UserRegisterRequest userDto) {
         AppUser appUser = mapper.map(userDto, AppUser.class);
         try {
             validateEmail(appUser.getEmail());
@@ -62,8 +62,6 @@ public class UserServiceImpl implements UserService {
 
         AppUser savedAppUser = userRepository.save(appUser);
         sendVerificationMail(savedAppUser.getEmail());
-
-        return getUserResponse(savedAppUser);
     }
 
     @Override

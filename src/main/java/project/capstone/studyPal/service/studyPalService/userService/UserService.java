@@ -16,7 +16,7 @@ import javax.security.auth.login.LoginException;
 public interface UserService {
     AppUser getUserByEmail(String email) throws LogicException;
     AppUser getUserById(Long userId) throws NotFoundException;
-    UserResponse register(UserRegisterRequest userDto) throws RegistrationException;
+    void register(UserRegisterRequest userDto) throws RegistrationException;
     UserResponse verifyAccount(AppUser appUser, String verificationCode) throws RegistrationException;
     void sendResetPasswordMailCredential(String email) throws LogicException;
     UserResponse login(String email, String password) throws LogicException;

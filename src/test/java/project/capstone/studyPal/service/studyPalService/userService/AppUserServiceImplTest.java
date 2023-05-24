@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+
 @SpringBootTest
 class AppUserServiceImplTest {
 
@@ -19,7 +22,7 @@ class AppUserServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        dto.setEmail("osodavid001@gmail.com");
+        dto.setEmail("owoblowpeter@gmail.com");
         dto.setPassword("testPassword34!");
         dto.setFirstName("David");
         dto.setLastName("Oso");
@@ -29,10 +32,11 @@ class AppUserServiceImplTest {
     @Test
     void registerUserTest() {
         try {
-            UserResponse testAppUser = userService.register(dto);
+            userService.register(dto);
         } catch (RegistrationException e) {
             throw new RuntimeException(e.getMessage());
         }
+//        assertTrue();
     }
 
     @Test
@@ -42,6 +46,7 @@ class AppUserServiceImplTest {
         } catch (RegistrationException e) {
             throw new RuntimeException(e.getMessage());
         }
+
     }
 
 }

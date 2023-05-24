@@ -35,7 +35,7 @@ public class AppUser {
     private boolean isEnabled = false;
     @OneToMany
     private List<Note> notes;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Shelf shelf = new Shelf();
     @OneToMany
     private List<StudyPlan> studyPlans;
