@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import project.capstone.studyPal.dto.request.MailCredential;
 
 @Configuration
 public class AppConfig {
@@ -49,15 +48,6 @@ public class AppConfig {
                         "api_secret",apiSecret
                 )
         );
-    }
-
-    @Bean
-    public MailCredential mailCredential() {
-        return new MailCredential();
-    }
-    @Bean
-    public JavaMailSender javaMailSender(){
-        return new JavaMailSenderImpl();
     }
 
 }

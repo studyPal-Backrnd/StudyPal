@@ -11,7 +11,6 @@ import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.capstone.studyPal.data.models.AppUser;
-import project.capstone.studyPal.dto.request.MailCredential;
 import project.capstone.studyPal.data.repository.UserRepository;
 import project.capstone.studyPal.dto.request.UserRegisterRequest;
 import project.capstone.studyPal.dto.response.UserResponse;
@@ -20,7 +19,6 @@ import project.capstone.studyPal.exception.LogicException;
 import project.capstone.studyPal.exception.NotFoundException;
 import project.capstone.studyPal.exception.RegistrationException;
 import project.capstone.studyPal.service.cloudService.CloudService;
-import project.capstone.studyPal.service.mailService.EmailService;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -31,9 +29,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private MailCredential mailCredential;
     private final UserRepository userRepository;
-    private final EmailService emailService;
     private final CloudService cloudService;
     private final ModelMapper mapper;
 
@@ -66,9 +62,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse verifyAccount(AppUser appUser, String verificationCode) throws RegistrationException {
-        if (mailCredential.getExpiryTime().isAfter(LocalDateTime.now())) throw new RegistrationException("invalid verification code");
-        if (!mailCredential.getRecipientEmail().equals(appUser.getEmail())) throw new RegistrationException("invalid user");
-        if (!mailCredential.getToken().equals(verificationCode)) throw new RegistrationException("invalid verification code");
+//        if (mailCredential.getExpiryTime().isAfter(LocalDateTime.now())) throw new RegistrationException("invalid verification code");
+//        if (!mailCredential.getRecipientEmail().equals(appUser.getEmail())) throw new RegistrationException("invalid user");
+//        if (!mailCredential.getToken().equals(verificationCode)) throw new RegistrationException("invalid verification code");
         appUser.setEnabled(true);
 
         return getUserResponse(appUser);
@@ -85,17 +81,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void resetPassword(String newPassword) throws RegistrationException, LogicException {
-        if (mailCredential.getExpiryTime().isAfter(LocalDateTime.now())) throw new RegistrationException("  ");
-        getUserByEmail(mailCredential.getRecipientEmail()).setPassword(newPassword);
+//        if (mailCredential.getExpiryTime().isAfter(LocalDateTime.now())) throw new RegistrationException("  ");
+//        getUserByEmail(mailCredential.getRecipientEmail()).setPassword(newPassword);
     }
 
     @Override
     public void sendResetPasswordMailCredential(String email) {
         String oneTimeResetPassword= RandomString.make(45);
-        mailCredential = new MailCredential();
-        mailCredential.setRecipientEmail(email);
-        mailCredential.setToken(oneTimeResetPassword);
-        emailService.sendMail(mailCredential);
+//        mailCredential = new MailCredential();
+//        mailCredential.setRecipientEmail(email);
+//        mailCredential.setToken(oneTimeResetPassword);
+//        emailService.sendMail(mailCredential);
     }
 
     @Override
@@ -128,14 +124,14 @@ public class UserServiceImpl implements UserService {
     }
 
     private void sendVerificationMail(String email) {
-        mailCredential = new MailCredential();
-        mailCredential.setRecipientEmail(email);
-        mailCredential.setToken(generateVerificationOTP());
-        mailCredential.setSubject("Activate Account");
-        mailCredential.setText(
-                "To activate your Study Pal account enter the following digits on your web browser\n\n"
-                        + mailCredential.getToken());
-        emailService.sendMail(mailCredential);
+//        mailCredential = new MailCredential();
+//        mailCredential.setRecipientEmail(email);
+//        mailCredential.setToken(generateVerificationOTP());
+//        mailCredential.setSubject("Activate Account");
+//        mailCredential.setText(
+//                "To activate your Study Pal account enter the following digits on your web browser\n\n"
+//                        + mailCredential.getToken());
+//        emailService.sendMail(mailCredential);
     }
 
 
