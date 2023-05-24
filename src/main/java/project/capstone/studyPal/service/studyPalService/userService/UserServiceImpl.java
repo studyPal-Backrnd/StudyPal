@@ -71,6 +71,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void sendResetPasswordMailCredential(String name, String email) throws LogicException {
+
+    }
+
+    @Override
     public UserResponse login(String email, String password) throws LogicException {
         AppUser appUser = userRepository.findByEmail(email);
         if (appUser == null || !appUser.getPassword().equals(password)) throw new LogicException("Email or password incorrect");
@@ -85,14 +90,14 @@ public class UserServiceImpl implements UserService {
 //        getUserByEmail(mailCredential.getRecipientEmail()).setPassword(newPassword);
     }
 
-    @Override
-    public void sendResetPasswordMailCredential(String email) {
-        String oneTimeResetPassword= RandomString.make(45);
-//        mailCredential = new MailCredential();
-//        mailCredential.setRecipientEmail(email);
-//        mailCredential.setToken(oneTimeResetPassword);
-//        emailService.sendMail(mailCredential);
-    }
+//    @Override
+//    public void sendResetPasswordMailCredential(String email) {
+//        String oneTimeResetPassword= RandomString.make(45);
+////        mailCredential = new MailCredential();
+////        mailCredential.setRecipientEmail(email);
+////        mailCredential.setToken(oneTimeResetPassword);
+////        emailService.sendMail(mailCredential);
+//    }
 
     @Override
     public AppUser updateUser(Long userId, @NotNull JsonPatch updatePayload) {

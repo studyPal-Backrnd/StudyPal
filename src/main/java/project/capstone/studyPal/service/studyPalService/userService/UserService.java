@@ -18,7 +18,7 @@ public interface UserService {
     AppUser getUserById(Long userId) throws NotFoundException;
     void register(UserRegisterRequest userDto) throws RegistrationException;
     UserResponse verifyAccount(AppUser appUser, String verificationCode) throws RegistrationException;
-    void sendResetPasswordMailCredential(String email) throws LogicException;
+    void sendResetPasswordMailCredential(String name, String email) throws LogicException;
     UserResponse login(String email, String password) throws LogicException;
     void resetPassword(String newPassword) throws RegistrationException, LogicException;
     AppUser updateUser(Long userId, JsonPatch updatePayLoad);
