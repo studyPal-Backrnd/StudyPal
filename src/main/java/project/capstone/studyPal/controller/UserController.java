@@ -12,13 +12,13 @@ import project.capstone.studyPal.exception.LogicException;
 import project.capstone.studyPal.exception.RegistrationException;
 import project.capstone.studyPal.service.studyPalService.userService.UserService;
 @AllArgsConstructor
-@RequestMapping("/api/v1/studyPal/")
+@RequestMapping("/api/v1/studypal/")
 @RestController
 public class UserController {
 
  private final   UserService userService;
 
-@PostMapping("registerUser")
+ @PostMapping("registerUser")
  public ResponseEntity <UserResponse> registerUser( UserRegisterRequest userDto) throws RegistrationException {
  return new ResponseEntity<>(userService.register(userDto), HttpStatus.CREATED);
 }
@@ -31,6 +31,6 @@ public class UserController {
 @PostMapping("login")
  public ResponseEntity <UserResponse> loginToAccount(@RequestParam String email, @RequestParam String password) throws LogicException {
  return new ResponseEntity<>(userService.login(email, password),  HttpStatus.ACCEPTED);
-}
+ }
 
 }

@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 //import org.hibernate.annotations.CreationTimestamp;
 
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,16 +23,16 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-//    @NotNull
+    @NotNull
     private String password;
-//    @NotNull
+    @NotNull
     @Column(unique = true)
     private String email;
-//    @NotNull
+    @NotNull
     private String firstName;
-//    @NotNull
+    @NotNull
     private String lastName;
-//    @CreationTimeStamp
+    @CreationTimestamp
     private final LocalDateTime createdDate = LocalDateTime.now();
     private boolean isEnabled = false;
     @OneToMany(cascade = CascadeType.ALL)
@@ -39,6 +41,8 @@ public class AppUser {
     private Shelf shelf = new Shelf();
     @OneToMany(cascade = CascadeType.ALL)
     private List<StudyPlan> studyPlans;
-//    @NotNull(message = "Image cannot be null")
+    @NotNull(message = "Image cannot be null")
     private String profileImage;
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 }

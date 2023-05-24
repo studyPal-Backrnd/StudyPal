@@ -19,10 +19,12 @@ import project.capstone.studyPal.exception.NotFoundException;
 import project.capstone.studyPal.exception.RegistrationException;
 import project.capstone.studyPal.service.mailService.EmailService;
 import project.capstone.studyPal.service.sendiblueEmailService.EmailNotificationRequest;
+import project.capstone.studyPal.service.sendiblueEmailService.Recipient;
 import project.capstone.studyPal.service.sendiblueEmailService.SendiblueMailService;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -55,10 +57,10 @@ public class UserServiceImpl implements UserService {
         } catch (RegistrationException e) {
             throw new RuntimeException(e.getMessage());
         }
-        validatePassword(appUser.getPassword());
+//        validatePassword(appUser.getPassword());
 
         AppUser savedAppUser = userRepository.save(appUser);
-        sendVerificationMail(savedAppUser.getEmail());
+        sendVerificationMail(appUser.getFirstName(), appUser.getEmail());
 
         return getUserResponse(savedAppUser);
     }
@@ -84,17 +86,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void resetPassword(String newPassword) throws RegistrationException, LogicException {
-        if (mailCredential.getExpiryTime().isAfter(LocalDateTime.now())) throw new RegistrationException("  ");
-        getUserByEmail(mailCredential.getRecipientEmail()).setPassword(newPassword);
+//        if (mailCredential.getExpiryTime().isAfter(LocalDateTime.now())) throw new RegistrationException("  ");
+//        getUserByEmail(mailCredential.getRecipientEmail()).setPassword(newPassword);
     }
 
     @Override
-    public void sendResetPasswordMailCredential(String email) {
+    public void sendResetPasswordMailCredential(String name, String email) {
         String oneTimeResetPassword= RandomString.make(45);
-        mailCredential = new MailCredential();
-        mailCredential.setRecipientEmail(email);
-        mailCredential.setToken(oneTimeResetPassword);
-        emailService.sendMail(mailCredential);
+//        mailCredential = new MailCredential();
+//        mailCredential.setRecipientEmail(email);
+//        mailCredential.setToken(oneTimeResetPassword);
+//        emailService.sendMail(mailCredential);
+
     }
 
     @Override
@@ -113,15 +116,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void sendVerificationMail(String email) {
-        mailCredential = new MailCredential();
-        mailCredential.setRecipientEmail(email);
-        mailCredential.setToken(generateVerificationOTP());
-        mailCredential.setSubject("Activate Account");
-        mailCredential.setText(
-                "To activate your Study Pal account enter the following digits on your web browser\n\n"
-                        + mailCredential.getToken());
-        emailService.sendMail(mailCredential);
+    private void sendVerificationMail(String name, String email) {
+//        mailCredential = new MailCredential();
+//        mailCredential.setRecipientEmail(email);
+//        mailCredential.setToken(generateVerificationOTP());
+//        mailCredential.setSubject("Activate Account");
+//        mailCredential.setText(
+//                "To activate your Study Pal account enter the following digits on your web browser\n\n"
+//                        + mailCredential.getToken());
+//        emailService.sendMail(mailCredential);
     }
 
 
@@ -130,9 +133,9 @@ public class UserServiceImpl implements UserService {
         return String.valueOf(otp.nextInt(1010, 10000));
     }
 
-    private void validatePassword(String password) {
-
-    }
+//    private void validatePassword(String password) {
+//
+//    }
 
     private void validateEmail(String email) throws RegistrationException{
         if (userRepository.findByEmail(email) != null) throw new RegistrationException("email already exists");

@@ -1,4 +1,4 @@
-package project.capstone.studyPal.config.app;
+package project.capstone.studyPal.config.appConfig;
 
 
 import lombok.AllArgsConstructor;

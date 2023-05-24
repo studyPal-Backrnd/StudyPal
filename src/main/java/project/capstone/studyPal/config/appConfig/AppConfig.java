@@ -1,4 +1,4 @@
-package project.capstone.studyPal.config.app;
+package project.capstone.studyPal.config.appConfig;
 
 import com.cloudinary.Cloudinary;
 import org.modelmapper.ModelMapper;
@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import project.capstone.studyPal.config.security.util.JwtUtil;
 import project.capstone.studyPal.dto.request.MailCredential;
 
 @Configuration
@@ -15,6 +18,18 @@ public class AppConfig {
     private String mailApiKey;
     @Value("${sendinblue.mail.url}")
     private String mailUrl;
+    @Value("${jwt.secret.key}")
+    private String jwtSecret;
+
+    @Bean
+    public JwtUtil jwtUtil(){
+        return new JwtUtil(jwtSecret);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
     @Bean
     public MailConfig mailConfig(){
         return new MailConfig(mailApiKey, mailUrl);

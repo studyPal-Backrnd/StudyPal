@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import project.capstone.studyPal.config.app.MailConfig;
+import project.capstone.studyPal.config.appConfig.MailConfig;
 
 @Service
 @AllArgsConstructor
