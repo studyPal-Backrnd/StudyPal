@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class UberDeluxeAuthenticationManager implements AuthenticationManager {
+public class StudyPalAuthenticationManager implements AuthenticationManager {
     private final AuthenticationProvider authenticationProvider;
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
