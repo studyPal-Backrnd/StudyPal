@@ -21,23 +21,23 @@ public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-    @NotNull
+//    @NotNull
     private String password;
-    @NotNull
+//    @NotNull
     @Column(unique = true)
     private String email;
-    @NotNull
+//    @NotNull
     private String firstName;
-    @NotNull
+//    @NotNull
     private String lastName;
 //    @CreationTimeStamp
     private final LocalDateTime createdDate = LocalDateTime.now();
     private boolean isEnabled = false;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Note> notes;
     @OneToOne(cascade = CascadeType.ALL)
     private Shelf shelf = new Shelf();
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<StudyPlan> studyPlans;
 //    @NotNull(message = "Image cannot be null")
     private String profileImage;

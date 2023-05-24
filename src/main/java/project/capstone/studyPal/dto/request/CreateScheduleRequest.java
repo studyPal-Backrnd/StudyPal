@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @AllArgsConstructor
@@ -13,8 +14,8 @@ import java.time.LocalTime;
 @Setter
 public class CreateScheduleRequest {
     private String purpose;
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private LocalTime startTime;
     private LocalTime endTime;
 }

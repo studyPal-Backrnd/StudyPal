@@ -23,8 +23,6 @@ public class Note {
     private Long id;
     private String title;
     private String body;
-//    @CreationTimestamp
     private final LocalDateTime dateAdded = LocalDateTime.now();
-//    @UpdateTimestamp
-    private LocalDateTime updatedTime;
+    private LocalDateTime updatedAt;
 }

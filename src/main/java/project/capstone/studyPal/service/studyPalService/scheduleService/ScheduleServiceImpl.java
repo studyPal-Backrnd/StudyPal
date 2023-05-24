@@ -23,21 +23,18 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public Schedule createASchedule(CreateScheduleRequest createScheduleRequest) throws DateTimeException {
         Schedule schedule = new Schedule();
-        LocalDate startDate = parseDate(createScheduleRequest.getStartDate());
-        validateDate(startDate);
-        LocalDate endDate = parseDate(createScheduleRequest.getEndDate());
-        validateDate(endDate);
-        if (createScheduleRequest.getStartTime().isBefore(LocalTime.now()))
-            throw new DateTimeException("Invalid time. Time cannot be the past");
-        if (createScheduleRequest.getEndTime().isBefore(createScheduleRequest.getStartTime()))
-            throw new DateTimeException("Invalid time. End time cannot be the past");
+        validateDate(createScheduleRequest.getStartDate());
+        validateDate(createScheduleRequest.getEndDate());
+        validateTime(createScheduleRequest.getStartTime());
+        validateTime(createScheduleRequest.getEndTime());
         schedule.setPurpose(createScheduleRequest.getPurpose());
-        schedule.setStartDate(startDate);
-        schedule.setEndDate(endDate);
+        schedule.setStartDate(createScheduleRequest.getStartDate());
+        schedule.setEndDate(createScheduleRequest.getEndDate());
         schedule.setStartTime(createScheduleRequest.getStartTime());
         schedule.setEndTime(createScheduleRequest.getEndTime());
         return schedule;
     }
+
 
     @Override
     public Set<Schedule> saveAllSchedules(Collection<Schedule> schedules) {
@@ -54,12 +51,13 @@ public class ScheduleServiceImpl implements ScheduleService{
     public void deleteScheduleById(Long scheduleId) {
         scheduleRepository.deleteById(scheduleId);
     }
-    private LocalDate parseDate(String startDate) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return LocalDate.parse(startDate, dateFormatter);
-    }
+
     private static void validateDate(LocalDate date) throws DateTimeException {
         if (date.isBefore(LocalDate.now()))
             throw new DateTimeException("Invalid date. Date cannot be the past");
+    }
+    private static void validateTime(LocalTime localTime) throws DateTimeException {
+        if (localTime.isBefore(LocalTime.now()))
+            throw new DateTimeException("Invalid time. Time cannot be the past");
     }
 }

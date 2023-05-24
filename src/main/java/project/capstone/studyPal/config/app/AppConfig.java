@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import project.capstone.studyPal.dto.request.MailCredential;
-import project.capstone.studyPal.service.studyPalService.noteService.NoteService;
-import project.capstone.studyPal.service.studyPalService.noteService.NoteServiceImpl;
 
 @Configuration
 public class AppConfig {
@@ -26,15 +24,21 @@ public class AppConfig {
     @Value("${google.books.api.key}")
     private String booksApiKey;
 
-    private String hostMailName;
 
-    private String hostMailAddress;
+
+    @Value("${mail.api.key}")
+    private String mailApiKey;
+    @Value("${sendinblue.mail.url}")
+    private String mailUrl;
+    @Bean
+    public MailConfig mailConfig(){
+        return new MailConfig(mailApiKey, mailUrl);
+    }
 
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-
 
     @Bean
     public Cloudinary cloudinary() {
@@ -55,4 +59,5 @@ public class AppConfig {
     public JavaMailSender javaMailSender(){
         return new JavaMailSenderImpl();
     }
+
 }
