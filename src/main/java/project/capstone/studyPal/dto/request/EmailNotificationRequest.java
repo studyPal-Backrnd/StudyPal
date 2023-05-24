@@ -1,4 +1,4 @@
-package project.capstone.studyPal.service.sendiblueEmailService;
+package project.capstone.studyPal.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -25,7 +25,7 @@ import java.util.List;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @AllArgsConstructor
-public class UberDeluxeAuthorizationFilter extends OncePerRequestFilter {
+public class StudyPalAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 

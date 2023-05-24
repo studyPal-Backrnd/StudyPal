@@ -4,13 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import project.capstone.studyPal.dto.request.EmailNotificationRequest;
+import project.capstone.studyPal.dto.request.Recipient;
+import project.capstone.studyPal.service.MailService.MailService;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
-class SendiblueMailServiceImplTest {
-    @Autowired SendiblueMailService sendiblueMailService;
+class MailServiceImplTest {
+    @Autowired
+    MailService mailService;
     private EmailNotificationRequest emailNotificationRequest;
 
     @BeforeEach
@@ -22,7 +26,7 @@ class SendiblueMailServiceImplTest {
 
     @Test
     void sendHtmlMail() {
-        String response = sendiblueMailService.sendHtmlMail(emailNotificationRequest);
+        String response = mailService.sendHtmlMail(emailNotificationRequest);
         assertThat(response).isNotNull();
     }
 }

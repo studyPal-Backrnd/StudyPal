@@ -9,31 +9,28 @@ import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import project.capstone.studyPal.data.models.AppUser;
-import project.capstone.studyPal.dto.request.MailCredential;
 import project.capstone.studyPal.data.repository.UserRepository;
 import project.capstone.studyPal.dto.request.UserRegisterRequest;
 import project.capstone.studyPal.dto.response.UserResponse;
+import project.capstone.studyPal.exception.ImageUploadException;
 import project.capstone.studyPal.exception.LogicException;
 import project.capstone.studyPal.exception.NotFoundException;
 import project.capstone.studyPal.exception.RegistrationException;
-import project.capstone.studyPal.service.mailService.EmailService;
-import project.capstone.studyPal.service.sendiblueEmailService.EmailNotificationRequest;
-import project.capstone.studyPal.service.sendiblueEmailService.Recipient;
-import project.capstone.studyPal.service.sendiblueEmailService.SendiblueMailService;
+import project.capstone.studyPal.service.cloudService.CloudService;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 
 
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private MailCredential mailCredential;
     private final UserRepository userRepository;
-    private final EmailService emailService;
+    private final CloudService cloudService;
     private final ModelMapper mapper;
 
     @Override
@@ -50,29 +47,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse register(UserRegisterRequest userDto) {
+    public void register(UserRegisterRequest userDto) {
         AppUser appUser = mapper.map(userDto, AppUser.class);
         try {
             validateEmail(appUser.getEmail());
         } catch (RegistrationException e) {
             throw new RuntimeException(e.getMessage());
         }
-//        validatePassword(appUser.getPassword());
+        validatePassword(appUser.getPassword());
 
         AppUser savedAppUser = userRepository.save(appUser);
-        sendVerificationMail(appUser.getFirstName(), appUser.getEmail());
-
-        return getUserResponse(savedAppUser);
+        sendVerificationMail(savedAppUser.getEmail());
     }
 
     @Override
     public UserResponse verifyAccount(AppUser appUser, String verificationCode) throws RegistrationException {
-        if (mailCredential.getExpiryTime().isAfter(LocalDateTime.now())) throw new RegistrationException("invalid verification code");
-        if (!mailCredential.getRecipientEmail().equals(appUser.getEmail())) throw new RegistrationException("invalid user");
-        if (!mailCredential.getToken().equals(verificationCode)) throw new RegistrationException("invalid verification code");
+//        if (mailCredential.getExpiryTime().isAfter(LocalDateTime.now())) throw new RegistrationException("invalid verification code");
+//        if (!mailCredential.getRecipientEmail().equals(appUser.getEmail())) throw new RegistrationException("invalid user");
+//        if (!mailCredential.getToken().equals(verificationCode)) throw new RegistrationException("invalid verification code");
         appUser.setEnabled(true);
 
         return getUserResponse(appUser);
+    }
+
+    @Override
+    public void sendResetPasswordMailCredential(String name, String email) throws LogicException {
+
     }
 
     @Override
@@ -90,15 +90,14 @@ public class UserServiceImpl implements UserService {
 //        getUserByEmail(mailCredential.getRecipientEmail()).setPassword(newPassword);
     }
 
-    @Override
-    public void sendResetPasswordMailCredential(String name, String email) {
-        String oneTimeResetPassword= RandomString.make(45);
-//        mailCredential = new MailCredential();
-//        mailCredential.setRecipientEmail(email);
-//        mailCredential.setToken(oneTimeResetPassword);
-//        emailService.sendMail(mailCredential);
-
-    }
+//    @Override
+//    public void sendResetPasswordMailCredential(String email) {
+//        String oneTimeResetPassword= RandomString.make(45);
+////        mailCredential = new MailCredential();
+////        mailCredential.setRecipientEmail(email);
+////        mailCredential.setToken(oneTimeResetPassword);
+////        emailService.sendMail(mailCredential);
+//    }
 
     @Override
     public AppUser updateUser(Long userId, @NotNull JsonPatch updatePayload) {
@@ -116,7 +115,20 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void sendVerificationMail(String name, String email) {
+    @Override
+    public void uploadProfileImage(MultipartFile profileImage, Long userId) throws ImageUploadException {
+        Optional<AppUser> user = userRepository.findById(userId);
+
+        String imageUrl = cloudService.upload(profileImage);
+        user.ifPresent(appUser -> updateProfilePicture(imageUrl, appUser));
+
+    }
+
+    private void updateProfilePicture(String imageUrl, @NotNull AppUser appUser) {
+        appUser.setProfileImage(imageUrl);
+    }
+
+    private void sendVerificationMail(String email) {
 //        mailCredential = new MailCredential();
 //        mailCredential.setRecipientEmail(email);
 //        mailCredential.setToken(generateVerificationOTP());
@@ -133,9 +145,9 @@ public class UserServiceImpl implements UserService {
         return String.valueOf(otp.nextInt(1010, 10000));
     }
 
-//    private void validatePassword(String password) {
-//
-//    }
+    private void validatePassword(String password) {
+
+    }
 
     private void validateEmail(String email) throws RegistrationException{
         if (userRepository.findByEmail(email) != null) throw new RegistrationException("email already exists");

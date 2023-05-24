@@ -2,6 +2,7 @@ package project.capstone.studyPal.service.studyPalService.studyPlanService;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import project.capstone.studyPal.data.models.Schedule;
 import project.capstone.studyPal.data.models.StudyPlan;
@@ -24,7 +25,7 @@ public class StudyPlanServiceImpl implements StudyPlanService{
     private final StudyPlanRepository studyPlanRepository;
     private final ScheduleService scheduleService;
     @Override
-    public String createStudyPlan(CreateStudyPlanRequest createStudyPlanRequest) throws DateTimeException {
+    public String createStudyPlan(@NotNull CreateStudyPlanRequest createStudyPlanRequest) throws DateTimeException {
         StudyPlan studyPlan = new StudyPlan();
         Set<Schedule> newSchedules = new HashSet<>();
         studyPlan.setTitle(createStudyPlanRequest.getTitle());
@@ -48,7 +49,7 @@ public class StudyPlanServiceImpl implements StudyPlanService{
     }
 
     @Override
-    public String updateStudyPlan(UpdateStudyPlanRequest updateStudyPlanRequest) throws DateTimeException {
+    public String updateStudyPlan(@NotNull UpdateStudyPlanRequest updateStudyPlanRequest) throws DateTimeException {
         StudyPlan foundStudyPlan = getStudyPlanById(updateStudyPlanRequest.getStudyPlanId());
         Set<Schedule> updatedSchedules = new HashSet<>();
         foundStudyPlan.setTitle(updateStudyPlanRequest.getTitle());
@@ -71,7 +72,7 @@ public class StudyPlanServiceImpl implements StudyPlanService{
     public void deleteStudyPlan(Long studyPlanId) {
         studyPlanRepository.deleteById(studyPlanId);
     }
-    private LocalDate parseDate(String date) throws DateTimeException {
+    private @NotNull LocalDate parseDate(String date) throws DateTimeException {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyy");
         LocalDate parseDate = LocalDate.parse(date, dateFormatter);
         if(parseDate.isBefore(LocalDate.now()))

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class UberDeluxeAuthenticationProvider implements AuthenticationProvider {
+public class StudyPalAuthenticationProvider implements AuthenticationProvider {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 

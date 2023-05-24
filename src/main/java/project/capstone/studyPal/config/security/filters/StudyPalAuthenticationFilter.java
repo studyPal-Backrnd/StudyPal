@@ -17,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import project.capstone.studyPal.config.security.util.JwtUtil;
 import project.capstone.studyPal.data.models.AppUser;
-import project.capstone.studyPal.exception.LogicException;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -28,7 +27,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class UberDeluxeAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class StudyPalAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
 
     private final JwtUtil jwtUtil;

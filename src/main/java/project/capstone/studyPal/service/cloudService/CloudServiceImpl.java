@@ -1,4 +1,4 @@
-package project.capstone.studyPal.service.studyPalService.cloudService;
+package project.capstone.studyPal.service.cloudService;
 
 import project.capstone.studyPal.exception.ImageUploadException;
 import com.cloudinary.Cloudinary;
