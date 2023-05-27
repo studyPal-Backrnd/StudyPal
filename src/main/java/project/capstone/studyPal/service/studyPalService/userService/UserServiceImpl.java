@@ -5,83 +5,86 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.internal.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.capstone.studyPal.data.models.AppUser;
+import project.capstone.studyPal.data.models.MyToken;
 import project.capstone.studyPal.data.repository.UserRepository;
+import project.capstone.studyPal.dto.request.EmailNotificationRequest;
+import project.capstone.studyPal.dto.request.Recipient;
 import project.capstone.studyPal.dto.request.UserRegisterRequest;
 import project.capstone.studyPal.dto.response.UserResponse;
-import project.capstone.studyPal.exception.ImageUploadException;
-import project.capstone.studyPal.exception.LogicException;
-import project.capstone.studyPal.exception.NotFoundException;
-import project.capstone.studyPal.exception.RegistrationException;
+import project.capstone.studyPal.exception.*;
+import project.capstone.studyPal.service.MailService.MailService;
 import project.capstone.studyPal.service.cloudService.CloudService;
+import project.capstone.studyPal.service.myTokenService.MyTokenService;
 
 import java.security.SecureRandom;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final CloudService cloudService;
     private final ModelMapper mapper;
+    private final MailService mailService;
+    private final MyTokenService myTokenService;
 
     @Override
-    public AppUser getUserByEmail(String email) throws LogicException {
-        AppUser foundUser =  userRepository.findByEmail(email);
-        if (foundUser == null) throw new LogicException(String.format("Passenger with email %s not found", email));
-        return foundUser;
+    public AppUser getUserByEmail(String email){
+        return userRepository.findByEmail(email).orElseThrow(
+                ()-> new NotFoundException(String.format("User with email %s not found", email)));
     }
 
     @Override
-    public AppUser getUserById(Long userId) throws NotFoundException {
+    public AppUser getUserById(Long userId){
         return userRepository.findById(userId).orElseThrow(
-                ()-> new NotFoundException("User not found.."));
+                () -> new NotFoundException("User not found.."));
     }
 
     @Override
-    public void register(UserRegisterRequest userDto) {
+    public String register(UserRegisterRequest userDto) {
         AppUser appUser = mapper.map(userDto, AppUser.class);
-        try {
-            validateEmail(appUser.getEmail());
-        } catch (RegistrationException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-        validatePassword(appUser.getPassword());
-
+        validateEmail(appUser.getEmail());
         AppUser savedAppUser = userRepository.save(appUser);
-        sendVerificationMail(savedAppUser.getEmail());
+        sendVerificationMail(savedAppUser);
+        return "Account created. Check your email to verify your account";
     }
 
     @Override
-    public UserResponse verifyAccount(AppUser appUser, String verificationCode) throws RegistrationException {
-//        if (mailCredential.getExpiryTime().isAfter(LocalDateTime.now())) throw new RegistrationException("invalid verification code");
-//        if (!mailCredential.getRecipientEmail().equals(appUser.getEmail())) throw new RegistrationException("invalid user");
-//        if (!mailCredential.getToken().equals(verificationCode)) throw new RegistrationException("invalid verification code");
-        appUser.setEnabled(true);
-
-        return getUserResponse(appUser);
+    public String verifyAccount(String verificationToken){
+        MyToken receivedToken = myTokenService.findMyTokenByToken(verificationToken);
+        if(!(LocalTime.now().isBefore(receivedToken.getCreatedAt().plusMinutes(30L)))){
+            AppUser appUser = receivedToken.getUser();
+            appUser.setEnabled(true);
+            userRepository.save(appUser);
+            return "Account verified";
+        }
+        else throw new RuntimeException("Token is expired or token is invalid");
     }
 
     @Override
-    public void sendResetPasswordMailCredential(String name, String email) throws LogicException {
+    public void sendResetPasswordMailCredential(String name, String email){
 
     }
 
     @Override
-    public UserResponse login(String email, String password) throws LogicException {
-        AppUser appUser = userRepository.findByEmail(email);
-        if (appUser == null || !appUser.getPassword().equals(password)) throw new LogicException("Email or password incorrect");
-        if (!appUser.isEnabled()) throw new LogicException("verify your account");
-
-        return getUserResponse(appUser);
+    public String login(String email, String password) throws LogicException {
+//        AppUser appUser = userRepository.findByEmail(email);
+//        if (appUser == null || !appUser.getPassword().equals(password))
+//            throw new LogicException("Email or password incorrect");
+//        if (!appUser.isEnabled()) throw new LogicException("verify your account");
+//
+//        return getUserResponse(appUser);
+        return null;
     }
 
     @Override
@@ -93,10 +96,10 @@ public class UserServiceImpl implements UserService {
 //    @Override
 //    public void sendResetPasswordMailCredential(String email) {
 //        String oneTimeResetPassword= RandomString.make(45);
-////        mailCredential = new MailCredential();
-////        mailCredential.setRecipientEmail(email);
-////        mailCredential.setToken(oneTimeResetPassword);
-////        emailService.sendMail(mailCredential);
+//        mailCredential = new MailCredential();
+//        mailCredential.setRecipientEmail(email);
+//        mailCredential.setToken(oneTimeResetPassword);
+//        emailService.sendMail(mailCredential);
 //    }
 
     @Override
@@ -128,15 +131,21 @@ public class UserServiceImpl implements UserService {
         appUser.setProfileImage(imageUrl);
     }
 
-    private void sendVerificationMail(String email) {
-//        mailCredential = new MailCredential();
-//        mailCredential.setRecipientEmail(email);
-//        mailCredential.setToken(generateVerificationOTP());
-//        mailCredential.setSubject("Activate Account");
-//        mailCredential.setText(
-//                "To activate your Study Pal account enter the following digits on your web browser\n\n"
-//                        + mailCredential.getToken());
-//        emailService.sendMail(mailCredential);
+    private void sendVerificationMail(AppUser appUser) {
+            String token = generateVerificationOTP();
+            MyToken myToken = MyToken.builder()
+                    .token(token)
+                    .user(appUser)
+                    .build();
+            MyToken savedToken = myTokenService.save(myToken);
+
+            EmailNotificationRequest emailNotificationRequest = new EmailNotificationRequest();
+            emailNotificationRequest.getTo().add(new Recipient(appUser.getFirstName(), appUser.getEmail()));
+            emailNotificationRequest.setSubject("Activate account");
+            emailNotificationRequest.setHtmlContent(
+                    "To activate your Study Pal account enter the following digits on your web browser  " + savedToken.getToken());
+
+            mailService.sendHtmlMail(emailNotificationRequest);
     }
 
 
@@ -145,12 +154,14 @@ public class UserServiceImpl implements UserService {
         return String.valueOf(otp.nextInt(1010, 10000));
     }
 
-    private void validatePassword(String password) {
+//    private void validatePassword(String password) {
+//
+//    }
 
-    }
+    private void validateEmail(String email){
+        if(userRepository.findByEmail(email).isPresent())
+            throw new UserExistsException(String.format("User with email %s already exists", email));
 
-    private void validateEmail(String email) throws RegistrationException{
-        if (userRepository.findByEmail(email) != null) throw new RegistrationException("email already exists");
     }
 
     private @NotNull UserResponse getUserResponse(@NotNull AppUser appUser) {
