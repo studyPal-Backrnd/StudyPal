@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -16,6 +17,6 @@ public class UpdateStudyPlanRequest {
     private String title;
     private String description;
     private Set<CreateScheduleRequest> createScheduleRequests;
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }

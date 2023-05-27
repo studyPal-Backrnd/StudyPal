@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -45,6 +46,11 @@ public class ScheduleServiceImpl implements ScheduleService{
     public Schedule getScheduleById(Long scheduleId) throws LogicException {
         return scheduleRepository.findById(scheduleId).orElseThrow(
                 ()-> new LogicException("Schedule not found or schedule is deleted"));
+    }
+
+    @Override
+    public List<Schedule> getAllSchedules() {
+        return scheduleRepository.findAll();
     }
 
     @Override

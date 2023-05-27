@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import project.capstone.studyPal.data.models.AppUser;
 import project.capstone.studyPal.dto.request.UserRegisterRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,10 +24,14 @@ class UserServiceImplTest {
 
     @Test
     void getUserByEmail() {
+        AppUser foundUser = userService.getUserByEmail("osodavid001@gmail.com");
+        assertThat(foundUser.getLastName()).isEqualTo("Pal");
     }
 
     @Test
     void getUserById() {
+        AppUser foundUser = userService.getUserById(1L);
+        assertThat(foundUser.getEmail()).isEqualTo(userRegisterRequest.getEmail());
     }
 
     @Test
@@ -37,7 +42,7 @@ class UserServiceImplTest {
 
     @Test
     void verifyAccount() {
-        String response = userService.verifyAccount("8607");
+        String response = userService.verifyAccount("1873");
         assertThat(response).isEqualTo("Account verified");
     }
 

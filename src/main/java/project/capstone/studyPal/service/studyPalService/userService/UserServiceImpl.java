@@ -62,13 +62,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public String verifyAccount(String verificationToken){
         MyToken receivedToken = myTokenService.findMyTokenByToken(verificationToken);
-        if(!(LocalTime.now().isBefore(receivedToken.getCreatedAt().plusMinutes(30L)))){
+        if(LocalTime.now().isBefore(receivedToken.getCreatedAt().plusMinutes(30L))){
             AppUser appUser = receivedToken.getUser();
             appUser.setEnabled(true);
             userRepository.save(appUser);
             return "Account verified";
         }
-        else throw new RuntimeException("Token is expired or token is invalid");
+        else throw new RegistrationException("Token is expired or token is invalid");
     }
 
     @Override
@@ -125,6 +125,11 @@ public class UserServiceImpl implements UserService {
         String imageUrl = cloudService.upload(profileImage);
         user.ifPresent(appUser -> updateProfilePicture(imageUrl, appUser));
 
+    }
+
+    @Override
+    public void saveUser(AppUser appUser) {
+        userRepository.save(appUser);
     }
 
     private void updateProfilePicture(String imageUrl, @NotNull AppUser appUser) {

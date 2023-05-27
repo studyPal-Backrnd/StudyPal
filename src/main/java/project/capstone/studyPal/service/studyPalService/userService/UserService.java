@@ -17,5 +17,6 @@ public interface UserService {
     void resetPassword(String newPassword) throws RegistrationException, LogicException;
     AppUser updateUser(Long userId, JsonPatch updatePayLoad);
     void uploadProfileImage(MultipartFile profileImage, Long userId) throws ImageUploadException;
+    void saveUser(AppUser appUser);
 
 }

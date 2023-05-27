@@ -6,4 +6,5 @@ import project.capstone.studyPal.data.models.MyToken;
 public interface MyTokenService {
     MyToken findMyTokenByToken(String token);
     MyToken save(MyToken myToken);
+    MyToken getTokenById(Long tokenId);
 }

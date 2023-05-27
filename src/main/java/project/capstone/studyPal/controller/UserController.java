@@ -20,22 +20,14 @@ public class UserController {
 
  @PostMapping("registerUser")
  public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest userDto){
-  try{
   String registerResponse = userService.register(userDto);
   return ResponseEntity.status(HttpStatus.CREATED).body(registerResponse);
-  }catch (RegistrationException registrationException){
-   throw new RuntimeException(registrationException.getMessage());
-  }
  }
 
 @GetMapping("verify")
- public ResponseEntity <?> verifyAccount(@RequestBody String verificationToken){
-  try{
+ public ResponseEntity <?> verifyAccount(@RequestParam String verificationToken){
   String response = userService.verifyAccount(verificationToken);
   return ResponseEntity.ok(response);
-  }catch (RegistrationException exception){
-   throw new RuntimeException(exception.getMessage());
-  }
 }
 
 //@PostMapping("login")
