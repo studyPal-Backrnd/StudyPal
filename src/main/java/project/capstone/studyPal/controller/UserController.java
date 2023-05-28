@@ -33,6 +33,7 @@ public class UserController {
 @GetMapping("get")
  public ResponseEntity<?> getUserByEmail(@RequestParam String email){
   AppUser foundUser = userService.getUserByEmail(email);
+ System.out.println(email);
   return ResponseEntity.status(HttpStatus.OK).body(foundUser);
 }
 
