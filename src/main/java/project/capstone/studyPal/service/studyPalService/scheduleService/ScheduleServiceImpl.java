@@ -27,7 +27,9 @@ public class ScheduleServiceImpl implements ScheduleService{
         validateDate(createScheduleRequest.getStartDate());
         validateDate(createScheduleRequest.getEndDate());
         validateTime(createScheduleRequest.getStartTime());
-        validateTime(createScheduleRequest.getEndTime());
+//        validateTime(createScheduleRequest.getEndTime());
+        if(!(createScheduleRequest.getEndTime().isAfter(schedule.getStartTime())))
+            throw new DateTimeException("The end time must be after the start time");
         schedule.setPurpose(createScheduleRequest.getPurpose());
         schedule.setStartDate(createScheduleRequest.getStartDate());
         schedule.setEndDate(createScheduleRequest.getEndDate());
