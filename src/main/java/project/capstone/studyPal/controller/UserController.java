@@ -19,18 +19,27 @@ public class UserController {
  private final UserService userService;
 
  @PostMapping("registerUser")
- public ResponseEntity <UserResponse> registerUser( UserRegisterRequest userDto) throws RegistrationException {
- return new ResponseEntity<>(userService.register(userDto), HttpStatus.CREATED);
-}
+ public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest userDto){
+  userService.register(userDto);
+  return ResponseEntity.status(HttpStatus.CREATED).body("check mail for verification code");
+ }
 
 @GetMapping("verify")
- public ResponseEntity <UserResponse > verifyAccount(@RequestParam String email, @RequestParam String verificationCode) throws RegistrationException {
- return new ResponseEntity<>(userService.verifyAccount(email, verificationCode), HttpStatus.OK);
+ public ResponseEntity <?> verifyAccount(@RequestParam String email, String verificationToken){
+  UserResponse response = userService.verifyAccount(email, verificationToken);
+  return ResponseEntity.ok(response);
 }
 
-@PostMapping("login")
- public ResponseEntity <UserResponse> loginToAccount(@RequestParam String email, @RequestParam String password) throws LogicException {
- return new ResponseEntity<>(userService.login(email, password),  HttpStatus.ACCEPTED);
- }
+@GetMapping("get")
+ public ResponseEntity<?> getUserByEmail(@RequestParam String email){
+  AppUser foundUser = userService.getUserByEmail(email);
+ System.out.println(email);
+  return ResponseEntity.status(HttpStatus.OK).body(foundUser);
+}
+
+//@PostMapping("login")
+// public ResponseEntity <UserResponse> loginToAccount(@RequestParam String email, @RequestParam String password) throws LogicException {
+// return new ResponseEntity<>(userService.login(email, password),  HttpStatus.ACCEPTED);
+// }
 
 }

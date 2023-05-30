@@ -6,9 +6,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import project.capstone.studyPal.config.security.util.JwtUtil;
 import project.capstone.studyPal.dto.request.EmailNotificationRequest;
 import project.capstone.studyPal.dto.response.Token;
 
@@ -22,10 +19,10 @@ public class AppConfig {
     @Value("${cloudinary.api.secret}")
     private String apiSecret;
 
-    @Value("${google.books.url}")
-    private String booksUrl;
-    @Value("${google.books.api.key}")
-    private String booksApiKey;
+//    @Value("${google.books.url}")
+//    private String booksUrl;
+//    @Value("${google.books.api.key}")
+//    private String booksApiKey;
 
 
 
@@ -36,15 +33,15 @@ public class AppConfig {
     @Value("${jwt.secret.key}")
     private String jwtSecret;
 
-    @Bean
-    public JwtUtil jwtUtil(){
-        return new JwtUtil(jwtSecret);
-    }
+//    @Bean
+//    public JwtUtil jwtUtil(){
+//        return new JwtUtil(jwtSecret);
+//    }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder(){
+//        return new BCryptPasswordEncoder();
+//    }
     @Bean
     public MailConfig mailConfig(){
         return new MailConfig(mailApiKey, mailUrl);

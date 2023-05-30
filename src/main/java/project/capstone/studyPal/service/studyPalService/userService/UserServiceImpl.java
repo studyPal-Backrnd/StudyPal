@@ -45,9 +45,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser getUserByEmail(String email) throws LogicException {
-        AppUser foundUser =  userRepository.findByEmail(email);
-        if (foundUser == null) throw new LogicException(String.format("Passenger with email %s not found", email));
-        return foundUser;
+        return userRepository.findByEmail(email).orElseThrow(
+                ()-> new LogicException(String.format("Email %s not found", email)));
     }
 
     @Override
@@ -76,7 +75,7 @@ public class UserServiceImpl implements UserService {
         if (token.isEmpty()) throw new LogicException("invalid token");
         if (token.get().getExpiryTime().isBefore(LocalDateTime.now())) throw new LogicException("expired token");
         appUser.setEnabled(true);
-        userRepository.save(appUser);
+        updateUser(appUser);
         tokenRepository.delete(token.get());
 
         return getUserResponse(appUser);
@@ -84,7 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse login(String email, String password) throws LogicException {
-        AppUser appUser = userRepository.findByEmail(email);
+        AppUser appUser = getUserByEmail(email);
         if (appUser == null || !appUser.getPassword().equals(password)) throw new LogicException("Email or password incorrect");
         if (!appUser.isEnabled()) throw new LogicException("verify your account");
 
@@ -96,7 +95,7 @@ public class UserServiceImpl implements UserService {
         if (token.getExpiryTime().isAfter(LocalDateTime.now())) throw new RegistrationException("reset token not found");
         AppUser appUser = getUserByEmail(token.getUser().getEmail());
         appUser.setPassword(newPassword);
-        userRepository.save(appUser);
+        updateUser(appUser);
     }
 
     @Override
@@ -132,6 +131,11 @@ public class UserServiceImpl implements UserService {
         } catch (JsonPatchException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    @Override
+    public void updateUser(AppUser updatedUser) {
+        userRepository.save(updatedUser);
     }
 
     @Override
@@ -185,7 +189,7 @@ public class UserServiceImpl implements UserService {
 
 
     private void validateEmail(String email) throws RegistrationException{
-        if (userRepository.findByEmail(email) != null) throw new RegistrationException("email already exists");
+        if (userRepository.findByEmail(email).isPresent()) throw new RegistrationException("email already exists");
     }
 
     private @NotNull UserResponse getUserResponse(@NotNull AppUser appUser) {

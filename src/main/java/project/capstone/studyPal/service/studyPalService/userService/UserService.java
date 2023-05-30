@@ -23,7 +23,9 @@ public interface UserService {
     UserResponse login(String email, String password) throws LogicException;
     void resetPassword(String newPassword) throws RegistrationException, LogicException;
     AppUser updateUser(Long userId, JsonPatch updatePayLoad);
+    void updateUser(AppUser user);
     void uploadProfileImage(MultipartFile profileImage, Long userId) throws ImageUploadException;
     void sendVerificationMail(@NotNull AppUser appUser);
+
 
 }

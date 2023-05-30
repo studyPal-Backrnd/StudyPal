@@ -6,6 +6,7 @@ public class StudyPalUtils {
     public static  final String PASSWORD_RESET_MAIL_TEMPLATE_LOCATION="/home/conerstonez/IdeaProjects/studyPal/src/main/resources/reset-password-mail.html";
     public static final String PASSWORD_REGEX_STRING = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
     public static final String NAME_REGEX = "^[a-zA-Z\\s]+$";
+    public static final String IMAGE_REGEX = "^.+\\.(?i)(jpg|jpeg|png|gif)$";
     public static final String STUDY_PAL_EMAIL_ADDRESS="co.studypal@gmail.com";
 
 

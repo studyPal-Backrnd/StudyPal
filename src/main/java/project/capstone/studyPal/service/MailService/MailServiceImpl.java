@@ -22,7 +22,6 @@ public class MailServiceImpl implements MailService {
     private final TokenRepository tokenRepository;
     @Override
     public String sendHtmlMail(@NotNull EmailNotificationRequest request) {
-//        request.setSubject("Verification token");
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
