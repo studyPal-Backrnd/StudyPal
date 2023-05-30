@@ -14,6 +14,7 @@ import project.capstone.studyPal.service.studyPalService.userService.UserService
 @AllArgsConstructor
 @RequestMapping("/api/v1/studypal/")
 @RestController
+@CrossOrigin(origins = "*")
 public class UserController {
 
  private final UserService userService;
@@ -33,13 +34,13 @@ public class UserController {
 @GetMapping("get")
  public ResponseEntity<?> getUserByEmail(@RequestParam String email){
   AppUser foundUser = userService.getUserByEmail(email);
- System.out.println(email);
   return ResponseEntity.status(HttpStatus.OK).body(foundUser);
 }
 
-//@PostMapping("login")
-// public ResponseEntity <UserResponse> loginToAccount(@RequestParam String email, @RequestParam String password) throws LogicException {
-// return new ResponseEntity<>(userService.login(email, password),  HttpStatus.ACCEPTED);
-// }
+@PostMapping("login")
+ public ResponseEntity <UserResponse> loginToAccount(@RequestParam String email, @RequestParam String password) {
+  UserResponse response = userService.login(email, password);
+ return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+ }
 
 }
