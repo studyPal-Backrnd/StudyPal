@@ -36,7 +36,7 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public String updateNote(UpdateNoteRequest updateNoteRequest) {
+    public String upDateNote(UpdateNoteRequest updateNoteRequest) {
         Note foundNote = getNoteById(updateNoteRequest.getNoteId());
         foundNote.setTitle(updateNoteRequest.getUpdateTitle());
         foundNote.setBody(updateNoteRequest.getUpdateBody());

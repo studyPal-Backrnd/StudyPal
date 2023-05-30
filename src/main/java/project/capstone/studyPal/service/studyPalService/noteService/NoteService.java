@@ -7,6 +7,6 @@ import project.capstone.studyPal.dto.request.UpdateNoteRequest;
 public interface NoteService {
     String createNote(CreateNoteRequest createNoteRequest);
     Note getNoteById(Long noteId);
-    String updateNote(UpdateNoteRequest updateNoteRequest);
+    String upDateNote(UpdateNoteRequest updateNoteRequest);
     String deleteNote(Long noteId);
 }

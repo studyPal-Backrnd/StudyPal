@@ -18,10 +18,10 @@ public class UserController {
 
  private final   UserService userService;
 
-// @PostMapping("registerUser")
-// public ResponseEntity <UserResponse> registerUser( UserRegisterRequest userDto) throws RegistrationException {
-// return new ResponseEntity<>(userService.register(userDto), HttpStatus.CREATED);
-//}
+ @PostMapping("registerUser")
+ public ResponseEntity <UserResponse> registerUser( UserRegisterRequest userDto) throws RegistrationException {
+ return new ResponseEntity<>(userService.register(userDto), HttpStatus.CREATED);
+}
 
 @GetMapping("verify")
  public ResponseEntity <UserResponse > verifyAccount(@RequestParam AppUser appUser, @RequestParam String verificationCode) throws RegistrationException {
