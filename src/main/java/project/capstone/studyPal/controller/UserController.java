@@ -16,16 +16,16 @@ import project.capstone.studyPal.service.studyPalService.userService.UserService
 @RestController
 public class UserController {
 
- private final   UserService userService;
+ private final UserService userService;
 
-// @PostMapping("registerUser")
-// public ResponseEntity <UserResponse> registerUser( UserRegisterRequest userDto) throws RegistrationException {
-// return new ResponseEntity<>(userService.register(userDto), HttpStatus.CREATED);
-//}
+ @PostMapping("registerUser")
+ public ResponseEntity <UserResponse> registerUser( UserRegisterRequest userDto) throws RegistrationException {
+ return new ResponseEntity<>(userService.register(userDto), HttpStatus.CREATED);
+}
 
 @GetMapping("verify")
- public ResponseEntity <UserResponse > verifyAccount(@RequestParam AppUser appUser, @RequestParam String verificationCode) throws RegistrationException {
- return new ResponseEntity<>(userService.verifyAccount(appUser, verificationCode), HttpStatus.OK);
+ public ResponseEntity <UserResponse > verifyAccount(@RequestParam String email, @RequestParam String verificationCode) throws RegistrationException {
+ return new ResponseEntity<>(userService.verifyAccount(email, verificationCode), HttpStatus.OK);
 }
 
 @PostMapping("login")

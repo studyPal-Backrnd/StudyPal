@@ -6,15 +6,16 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import project.capstone.studyPal.config.security.util.JwtUtil;
+import project.capstone.studyPal.dto.request.EmailNotificationRequest;
+import project.capstone.studyPal.dto.response.Token;
 
 @Configuration
 public class AppConfig {
 
+    @Value("${cloudinary.cloud.name}")
     private String cloudName;
     @Value("${cloudinary.api.key}")
     private String apiKey;
@@ -52,6 +53,16 @@ public class AppConfig {
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Bean
+    public EmailNotificationRequest emailNotificationRequest() {
+        return new EmailNotificationRequest();
+    }
+
+    @Bean
+    public Token Token() {
+        return new Token();
     }
 
     @Bean

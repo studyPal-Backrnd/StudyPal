@@ -18,5 +18,6 @@ public class UserResponse {
     private String lastName;
     private List<Note> notes;
     private Shelf shelf;
+    private boolean isEnabled;
     private List<StudyPlan> studyPlans;
 }
