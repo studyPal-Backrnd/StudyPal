@@ -19,5 +19,5 @@ public class MyToken {
     @OneToOne(fetch = FetchType.EAGER)
     private AppUser user;
     private final LocalTime createdAt = LocalTime.now();
-
+    private final LocalTime expiryTime = createdAt.plusMinutes(30L);
 }

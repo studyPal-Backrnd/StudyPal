@@ -24,7 +24,7 @@ public class UserController {
   return ResponseEntity.status(HttpStatus.CREATED).body(registerResponse);
  }
 
-@GetMapping("verify")
+@PostMapping("verify")
  public ResponseEntity <?> verifyAccount(@RequestParam String verificationToken){
   String response = userService.verifyAccount(verificationToken);
   return ResponseEntity.ok(response);
@@ -33,13 +33,11 @@ public class UserController {
 @GetMapping("get")
  public ResponseEntity<?> getUserByEmail(@RequestParam String email){
   AppUser foundUser = userService.getUserByEmail(email);
- System.out.println(email);
   return ResponseEntity.status(HttpStatus.OK).body(foundUser);
 }
-
-//@PostMapping("login")
-// public ResponseEntity <UserResponse> loginToAccount(@RequestParam String email, @RequestParam String password) throws LogicException {
-// return new ResponseEntity<>(userService.login(email, password),  HttpStatus.ACCEPTED);
-// }
-
+@GetMapping("{userId}")
+ public ResponseEntity<?> getUserById(@PathVariable Long userId){
+  AppUser foundUser = userService.getUserById(userId);
+  return ResponseEntity.status(HttpStatus.OK).body(foundUser);
+}
 }

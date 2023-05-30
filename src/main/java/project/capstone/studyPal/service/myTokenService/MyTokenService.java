@@ -7,4 +7,5 @@ public interface MyTokenService {
     MyToken findMyTokenByToken(String token);
     MyToken save(MyToken myToken);
     MyToken getTokenById(Long tokenId);
+    void deleteVerificationToken(String token);
 }

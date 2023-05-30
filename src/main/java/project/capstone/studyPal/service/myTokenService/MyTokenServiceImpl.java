@@ -27,4 +27,10 @@ public class MyTokenServiceImpl implements MyTokenService {
         return myTokenRepository.findById(tokenId).orElseThrow(
                 ()-> new NotFoundException("Token not found"));
     }
+
+    @Override
+    public void deleteVerificationToken(String token) {
+        MyToken foundToken = findMyTokenByToken(token);
+        myTokenRepository.delete(foundToken);
+    }
 }

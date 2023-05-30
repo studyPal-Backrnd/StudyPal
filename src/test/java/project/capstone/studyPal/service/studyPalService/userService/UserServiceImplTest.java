@@ -18,8 +18,9 @@ class UserServiceImplTest {
         userRegisterRequest = new UserRegisterRequest();
         userRegisterRequest.setFirstName("Study");
         userRegisterRequest.setLastName("Pal");
-        userRegisterRequest.setPassword("password");
-        userRegisterRequest.setEmail("osodavid001@gmail.com");
+        userRegisterRequest.setPassword("Password111@");
+        userRegisterRequest.setEmail("owoblowpeter@gmail.com");
+//        userRegisterRequest.setEmail("owoblowpeter@gmail.com");
     }
 
     @Test

@@ -62,13 +62,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public String verifyAccount(String verificationToken){
         MyToken receivedToken = myTokenService.findMyTokenByToken(verificationToken);
-        if(LocalTime.now().isBefore(receivedToken.getCreatedAt().plusMinutes(30L))){
+//        if(LocalTime.now().isBefore(receivedToken.getCreatedAt().plusMinutes(30L))){
+        if(LocalTime.now().isAfter(receivedToken.getExpiryTime()))
+            throw new RegistrationException("Token is expired.");
+        else if(LocalTime.now().isBefore(receivedToken.getExpiryTime())){
             AppUser appUser = receivedToken.getUser();
             appUser.setEnabled(true);
             userRepository.save(appUser);
-            return "Account verified";
+            myTokenService.deleteVerificationToken(verificationToken);
         }
-        else throw new RegistrationException("Token is expired or token is invalid");
+        else
+            throw new RegistrationException("Token is invalid");
+        return "Account verified";
     }
 
     @Override

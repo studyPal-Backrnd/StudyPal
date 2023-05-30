@@ -2,12 +2,14 @@ package project.capstone.studyPal.config.appConfig;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import project.capstone.studyPal.config.security.util.JwtUtil;
 
 @Configuration
 public class AppConfig {
@@ -18,7 +20,6 @@ public class AppConfig {
     private String apiKey;
     @Value("${cloudinary.api.secret}")
     private String apiSecret;
-
 //    @Value("${google.books.url}")
 //    private String booksUrl;
 //    @Value("${google.books.api.key}")
@@ -33,15 +34,15 @@ public class AppConfig {
     @Value("${jwt.secret.key}")
     private String jwtSecret;
 
-//    @Bean
-//    public JwtUtil jwtUtil(){
-//        return new JwtUtil(jwtSecret);
-//    }
+    @Bean
+    public JwtUtil jwtUtil(){
+        return new JwtUtil(jwtSecret);
+    }
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder(){
-//        return new BCryptPasswordEncoder();
-//    }
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
     @Bean
     public MailConfig mailConfig(){
         return new MailConfig(mailApiKey, mailUrl);
@@ -50,6 +51,11 @@ public class AppConfig {
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Bean
+    public ObjectMapper objectMapper(){
+        return new ObjectMapper();
     }
 
     @Bean
