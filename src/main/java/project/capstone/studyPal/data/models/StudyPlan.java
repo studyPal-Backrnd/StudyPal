@@ -21,7 +21,7 @@ public class StudyPlan {
     private Long id;
     private String title;
     private String description;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Schedule> schedules;
     private LocalDate createdDate;
     private LocalDate endDate;

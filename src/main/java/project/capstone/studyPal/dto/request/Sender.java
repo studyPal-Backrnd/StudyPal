@@ -1,15 +1,11 @@
 package project.capstone.studyPal.dto.request;
 
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Setter
+@Builder
 @Getter
+@Setter
+@AllArgsConstructor
 public class Sender {
     private String name;
     private String email;

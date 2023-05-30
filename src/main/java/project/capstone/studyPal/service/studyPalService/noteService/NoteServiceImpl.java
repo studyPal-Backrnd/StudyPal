@@ -1,45 +1,39 @@
 package project.capstone.studyPal.service.studyPalService.noteService;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import project.capstone.studyPal.data.models.AppUser;
 import project.capstone.studyPal.data.models.Note;
 import project.capstone.studyPal.data.repository.NoteRepository;
-import project.capstone.studyPal.data.repository.UserRepository;
 import project.capstone.studyPal.dto.request.CreateNoteRequest;
 import project.capstone.studyPal.dto.request.UpdateNoteRequest;
+import project.capstone.studyPal.exception.LogicException;
 import project.capstone.studyPal.exception.NotFoundException;
-import project.capstone.studyPal.service.studyPalService.cloudService.CloudService;
-import lombok.AllArgsConstructor;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.stereotype.Service;
+import project.capstone.studyPal.service.studyPalService.userService.UserService;
 
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Service
 @AllArgsConstructor
-public class NoteServiceImpl implements NoteService {
-    private final UserRepository userRepository;
-    private CloudService cloudService;
+public class NoteServiceImpl implements NoteService{
+    private final UserService userService;
     private final NoteRepository noteRepository;
-
     @Override
-    public AppUser getUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(
-                ()-> new NotFoundException("User not found..."));
-    }
-
-    @Override
-    public String createNote(@NotNull CreateNoteRequest createNoteRequest) {
-        AppUser foundUser = getUserById(createNoteRequest.getUserId());
+    public String createNote(CreateNoteRequest createNoteRequest) {
         Note note = new Note();
-        note.setTitle(createNoteRequest.getTitle());
-        note.setBody(createNoteRequest.getBody());
-        foundUser.setNotes(List.of(note));
-        noteRepository.save(note);
-        return "Note created";
+        AppUser foundUser = userService.getUserById(createNoteRequest.getUserId());
+        if(!foundUser.isEnabled())
+            throw new LogicException("User is not enabled");
+        else{
+            note.setTitle(createNoteRequest.getTitle());
+            note.setBody(createNoteRequest.getBody());
+//            Note savedNote = noteRepository.save(note);
+//            foundUser.getNotes().add(savedNote);
+            foundUser.getNotes().add(note);
+            userService.updateUser(foundUser);
+            return "New note created";
+        }
     }
 
     @Override
@@ -49,26 +43,28 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public String updateNote(@NotNull UpdateNoteRequest updateNoteRequest) {
-        Note note = getNoteById(updateNoteRequest.getNoteId());
-        note.setTitle(updateNoteRequest.getUpdateTitle());
-        note.setBody(updateNoteRequest.getUpdateBody());
-        note.setUpdatedTime(LocalDateTime.now());
-        noteRepository.save(note);
-        return "Note update successfully";
+    public List<Note> getAllNotes() {
+        return noteRepository.findAll();
     }
 
     @Override
-    public String deleteNoteById(Long noteId) {
-        noteRepository.deleteById(noteId);
-        return "Note deleted";
+    public Long noteCount() {
+        return noteRepository.count();
     }
 
-    private String validateEmail(String email) {
-        SecureRandom randomNumbers = new SecureRandom();
-        String token =  randomNumbers.ints(5, 0, 10)
-                .mapToObj(String::valueOf)
-                .collect(Collectors.joining(""));
-        return token;
+    @Override
+    public String updateNote(UpdateNoteRequest updateNoteRequest) {
+        Note foundNote = getNoteById(updateNoteRequest.getNoteId());
+        foundNote.setTitle(updateNoteRequest.getUpdateTitle());
+        foundNote.setBody(updateNoteRequest.getUpdateBody());
+        foundNote.setUpdatedAt(LocalDateTime.now());
+        noteRepository.save(foundNote);
+        return "Note is updated";
+    }
+
+    @Override
+    public String deleteNote(Long noteId) {
+        noteRepository.deleteById(noteId);
+        return "Note deleted";
     }
 }

@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+//import org.hibernate.annotations.CreationTimestamp;
+//import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 @Entity
@@ -25,6 +27,5 @@ public class Note {
     private String body;
     @CreationTimestamp
     private final LocalDateTime dateAdded = LocalDateTime.now();
-    @UpdateTimestamp
-    private LocalDateTime updatedTime;
+    private LocalDateTime updatedAt;
 }
