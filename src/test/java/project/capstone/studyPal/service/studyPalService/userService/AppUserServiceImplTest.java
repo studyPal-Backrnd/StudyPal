@@ -3,6 +3,7 @@ package project.capstone.studyPal.service.studyPalService.userService;
 import project.capstone.studyPal.data.models.AppUser;
 import project.capstone.studyPal.dto.request.UserRegisterRequest;
 import project.capstone.studyPal.dto.response.UserResponse;
+import project.capstone.studyPal.exception.LogicException;
 import project.capstone.studyPal.exception.RegistrationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,11 +23,11 @@ class AppUserServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        dto.setEmail("owoblowpeter@gmail.com");
-        dto.setPassword("testPassword34!");
-        dto.setFirstName("David");
-        dto.setLastName("Oso");
-
+        dto.setEmail("samuelshola14@gmail.com");
+//        dto.setEmail("owoblowpeter@gmail.com");
+        dto.setPassword("testPassword!54");
+        dto.setFirstName("Samuel");
+        dto.setLastName("Shola");
     }
 
     @Test
@@ -41,12 +42,19 @@ class AppUserServiceImplTest {
 
     @Test
     void verifyUserAccount() {
+        UserResponse appUser;
         try {
-            UserResponse appUser = userService.verifyAccount(testAppUser, "1234");
+            appUser = userService.verifyAccount("samuelshola14@gmail.com", "5218");
         } catch (RegistrationException e) {
             throw new RuntimeException(e.getMessage());
         }
+        assertTrue(appUser.isEnabled());
 
+    }
+
+    @Test
+    void verifyUserAtLogin() {
+        assertThrows(RuntimeException.class, ()->userService.login("owoblowpeter@gmail.com", "testPassword34!"));
     }
 
 }

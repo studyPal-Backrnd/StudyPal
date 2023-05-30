@@ -1,15 +1,10 @@
 package project.capstone.studyPal.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
-
-import static project.capstone.studyPal.util.StudyPalUtils.EMAIL_REGEX_STRING;
-import static project.capstone.studyPal.util.StudyPalUtils.PASSWORD_REGEX_STRING;
+import static project.capstone.studyPal.util.StudyPalUtils.*;
 
 
 @Data
@@ -24,15 +19,20 @@ public class UserRegisterRequest {
     @NotEmpty
     @NotNull
     @JsonProperty("password")
-    @Email(message = "invalid password", regexp = PASSWORD_REGEX_STRING)
+    @Pattern(message = "invalid password", regexp = PASSWORD_REGEX_STRING)
     private String password;
 
     @NotNull(message = "field name cannot be null")
     @NotEmpty(message = "field name cannot be empty")
+    @Pattern(message = "first name must only be letters", regexp = NAME_REGEX)
     private String firstName;
 
     @NotNull(message = "field name cannot be null")
     @NotEmpty(message = "field name cannot be empty")
+    @Pattern(message = "last name must only be letters", regexp = NAME_REGEX)
     private String lastName;
+
+    @Pattern(message = "upload an image", regexp = IMAGE_REGEX)
+    private String image;
 
 }

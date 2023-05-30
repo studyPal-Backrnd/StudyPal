@@ -22,8 +22,8 @@ public class NoteController {
         return new ResponseEntity<>(noteService.getNoteById(noteId), HttpStatus.OK);
     }
     @PutMapping("upDateNote")
-    public  ResponseEntity<String> upDateNote(@RequestBody UpdateNoteRequest request){
-        return new ResponseEntity<>(noteService.upDateNote(request), HttpStatus.CONTINUE);
+    public  ResponseEntity<String> updateNote(@RequestBody UpdateNoteRequest request){
+        return new ResponseEntity<>(noteService.updateNote(request), HttpStatus.CONTINUE);
     }
     @DeleteMapping("deleteNoteById")
     public ResponseEntity<String> deleteNote(@RequestBody long id){

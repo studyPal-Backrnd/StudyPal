@@ -27,6 +27,5 @@ public class Note {
     private String body;
     @CreationTimestamp
     private final LocalDateTime dateAdded = LocalDateTime.now();
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
 }

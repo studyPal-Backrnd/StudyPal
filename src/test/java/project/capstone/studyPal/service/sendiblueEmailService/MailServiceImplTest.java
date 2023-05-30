@@ -21,6 +21,7 @@ class MailServiceImplTest {
     void setUp() {
         emailNotificationRequest = new EmailNotificationRequest();
         emailNotificationRequest.setTo(List.of(new Recipient("temx", "osodavid001@gmail.com")));
+        emailNotificationRequest.setSubject("Verification ");
         emailNotificationRequest.setHtmlContent("Your verification token is: 12345");
     }
 

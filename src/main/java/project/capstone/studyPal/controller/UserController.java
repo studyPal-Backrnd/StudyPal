@@ -14,23 +14,33 @@ import project.capstone.studyPal.service.studyPalService.userService.UserService
 @AllArgsConstructor
 @RequestMapping("/api/v1/studypal/")
 @RestController
+@CrossOrigin(origins = "*")
 public class UserController {
 
- private final   UserService userService;
+ private final UserService userService;
 
  @PostMapping("registerUser")
- public ResponseEntity <UserResponse> registerUser( UserRegisterRequest userDto) throws RegistrationException {
- return new ResponseEntity<>(userService.register(userDto), HttpStatus.CREATED);
-}
+ public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest userDto) {
+  userService.register(userDto);
+  return ResponseEntity.status(HttpStatus.CREATED).body("check mail for verification code");
+ }
 
 @GetMapping("verify")
- public ResponseEntity <UserResponse > verifyAccount(@RequestParam AppUser appUser, @RequestParam String verificationCode) throws RegistrationException {
- return new ResponseEntity<>(userService.verifyAccount(appUser, verificationCode), HttpStatus.OK);
+ public ResponseEntity <?> verifyAccount(@RequestParam String email, String verificationToken) {
+ UserResponse response = userService.verifyAccount(email, verificationToken);
+ return ResponseEntity.ok(response);
+}
+
+@GetMapping("get")
+ public ResponseEntity<?> getUserByEmail(@RequestParam String email){
+  AppUser foundUser = userService.getUserByEmail(email);
+  return ResponseEntity.status(HttpStatus.OK).body(foundUser);
 }
 
 @PostMapping("login")
- public ResponseEntity <UserResponse> loginToAccount(@RequestParam String email, @RequestParam String password) throws LogicException {
- return new ResponseEntity<>(userService.login(email, password),  HttpStatus.ACCEPTED);
+ public ResponseEntity <UserResponse> loginToAccount(@RequestParam String email, @RequestParam String password) {
+  UserResponse response = userService.login(email, password);
+ return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
  }
 
 }
