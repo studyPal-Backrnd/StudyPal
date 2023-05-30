@@ -43,6 +43,4 @@ public class AppUser {
     private List<StudyPlan> studyPlans;
 //    @NotNull(message = "Image cannot be null")
     private String profileImage;
-    @Enumerated(EnumType.STRING)
-    private Role role = Role.STUDENT;
 }

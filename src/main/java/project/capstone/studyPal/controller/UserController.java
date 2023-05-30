@@ -20,15 +20,15 @@ public class UserController {
  private final UserService userService;
 
  @PostMapping("registerUser")
- public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest userDto){
+ public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest userDto) {
   userService.register(userDto);
   return ResponseEntity.status(HttpStatus.CREATED).body("check mail for verification code");
  }
 
 @GetMapping("verify")
- public ResponseEntity <?> verifyAccount(@RequestParam String email, String verificationToken){
-  UserResponse response = userService.verifyAccount(email, verificationToken);
-  return ResponseEntity.ok(response);
+ public ResponseEntity <?> verifyAccount(@RequestParam String email, String verificationToken) {
+ UserResponse response = userService.verifyAccount(email, verificationToken);
+ return ResponseEntity.ok(response);
 }
 
 @GetMapping("get")
