@@ -31,7 +31,7 @@ public class NoteServiceImpl implements NoteService{
 //            Note savedNote = noteRepository.save(note);
 //            foundUser.getNotes().add(savedNote);
             foundUser.getNotes().add(note);
-            userService.saveUser(foundUser);
+            userService.updateUser(foundUser);
             return "New note created";
         }
     }

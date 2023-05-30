@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class EmailNotificationRequest {
     private final Sender sender = new Sender("study_pal", "noreply@studypal.net");
-    private List<Recipient> to=new ArrayList<>();
+    private List<Recipient> to = new ArrayList<>();
     private String subject;
     private String htmlContent;
 }

@@ -6,8 +6,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import project.capstone.studyPal.dto.request.EmailNotificationRequest;
+import project.capstone.studyPal.dto.response.Token;
 
 @Configuration
 public class AppConfig {
@@ -50,6 +50,16 @@ public class AppConfig {
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Bean
+    public EmailNotificationRequest emailNotificationRequest() {
+        return new EmailNotificationRequest();
+    }
+
+    @Bean
+    public Token Token() {
+        return new Token();
     }
 
     @Bean

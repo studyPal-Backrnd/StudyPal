@@ -35,14 +35,12 @@ public class AppUser {
     @CreationTimestamp
     private final LocalDateTime createdDate = LocalDateTime.now();
     private boolean isEnabled = false;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Note> notes;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Shelf shelf;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Shelf shelf = new Shelf();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<StudyPlan> studyPlans;
 //    @NotNull(message = "Image cannot be null")
     private String profileImage;
-    @Enumerated(EnumType.STRING)
-    private Role role = Role.STUDENT;
 }
