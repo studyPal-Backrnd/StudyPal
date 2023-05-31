@@ -19,19 +19,19 @@ public class UserController {
 
  private final UserService userService;
 
- @PostMapping("registerUser")
+ @PostMapping("register")
  public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest userDto) {
   userService.register(userDto);
   return ResponseEntity.status(HttpStatus.CREATED).body("check mail for verification code");
  }
 
-@GetMapping("verify")
- public ResponseEntity <?> verifyAccount(@RequestParam String email, String verificationToken) {
+@PostMapping("verify")
+ public ResponseEntity <?> verifyAccount(@RequestParam String email, @RequestParam String verificationToken) {
  UserResponse response = userService.verifyAccount(email, verificationToken);
  return ResponseEntity.ok(response);
 }
 
-@GetMapping("get")
+@GetMapping("user")
  public ResponseEntity<?> getUserByEmail(@RequestParam String email){
   AppUser foundUser = userService.getUserByEmail(email);
   return ResponseEntity.status(HttpStatus.OK).body(foundUser);
