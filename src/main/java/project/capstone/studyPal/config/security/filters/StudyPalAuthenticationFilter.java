@@ -73,7 +73,7 @@ public class StudyPalAuthenticationFilter extends UsernamePasswordAuthentication
                                 .compact();
 
         String refreshToken = Jwts.builder()
-                .setIssuer("uber_deluxe")
+                .setIssuer("study_pal")
                 .setExpiration(Date.from(Instant.now()
                         .plusSeconds(BigInteger.valueOf(3600).longValue()*
                                 BigInteger.valueOf(24).intValue())))

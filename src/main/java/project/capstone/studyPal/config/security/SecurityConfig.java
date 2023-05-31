@@ -31,7 +31,6 @@ import java.util.List;
 public class SecurityConfig {
 
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
     private final ObjectMapper objectMapper;
     private final String[] AUTHENTICATION_WHITE_LIST = {"/api/v1/studypal/registerUser", "/api/v1/studypal/verify", "/api/v1/studypal/login"};
@@ -73,7 +72,7 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedHeaders(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", configuration);

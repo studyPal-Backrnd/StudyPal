@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import project.capstone.studyPal.config.security.util.JwtUtil;
+import project.capstone.studyPal.dto.request.EmailNotificationRequest;
+import project.capstone.studyPal.dto.response.Token;
 
 @Configuration
 public class AppConfig {
@@ -56,6 +58,16 @@ public class AppConfig {
     @Bean
     public ObjectMapper objectMapper(){
         return new ObjectMapper();
+    }
+
+    @Bean
+    public EmailNotificationRequest emailNotificationRequest() {
+        return new EmailNotificationRequest();
+    }
+
+    @Bean
+    public Token Token() {
+        return new Token();
     }
 
     @Bean

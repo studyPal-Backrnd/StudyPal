@@ -23,9 +23,7 @@ public class SecureUser implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return appUser.getRole().stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
-                .collect(Collectors.toList());
+        return appUser.getRole().getAuthorities();
     }
 
     @Override

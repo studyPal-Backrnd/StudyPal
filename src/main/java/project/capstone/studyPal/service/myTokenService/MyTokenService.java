@@ -1,11 +1,11 @@
-package project.capstone.studyPal.service.myTokenService;
-
-
-import project.capstone.studyPal.data.models.MyToken;
-
-public interface MyTokenService {
-    MyToken findMyTokenByToken(String token);
-    MyToken save(MyToken myToken);
-    MyToken getTokenById(Long tokenId);
-    void deleteVerificationToken(String token);
-}
+//package project.capstone.studyPal.service.myTokenService;
+//
+//
+//import project.capstone.studyPal.data.models.MyToken;
+//
+//public interface MyTokenService {
+//    MyToken findMyTokenByToken(String token);
+//    MyToken save(MyToken myToken);
+//    MyToken getTokenById(Long tokenId);
+//    void deleteVerificationToken(String token);
+//}

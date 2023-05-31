@@ -49,7 +49,7 @@ public class StudyPlanServiceImpl implements StudyPlanService{
             studyPlan.setCreatedDate(createStudyPlanRequest.getStartDate());
             studyPlan.setEndDate(createStudyPlanRequest.getEndDate());
             foundUser.getStudyPlans().add(studyPlan);
-            userService.saveUser(foundUser);
+            userService.updateUser(foundUser);
             return "Study plan created";
         }
     }
