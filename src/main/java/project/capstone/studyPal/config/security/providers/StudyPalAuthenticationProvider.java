@@ -25,6 +25,12 @@ public class StudyPalAuthenticationProvider implements AuthenticationProvider {
             return new UsernamePasswordAuthenticationToken(appUserDetails.getUsername(), appUserDetails.getPassword(), appUserDetails.getAuthorities());
 
         throw new BadCredentialsException("incorrect username or password");
+//        if(appUserDetails.getUsername() == null)
+//            throw new BadCredentialsException("Email is invalid");
+//        else if(!(passwordEncoder.matches(authentication.getCredentials().toString(), appUserDetails.getPassword())))
+//            throw new BadCredentialsException("Password is invalid");
+//        else if(passwordEncoder.matches(authentication.getCredentials().toString(), appUserDetails.getPassword()))
+//            return new UsernamePasswordAuthenticationToken(appUserDetails.getUsername(), appUserDetails.getPassword(), appUserDetails.getAuthorities());
     }
 
     @Override

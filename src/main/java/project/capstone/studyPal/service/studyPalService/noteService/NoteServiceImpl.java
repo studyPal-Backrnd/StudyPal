@@ -28,10 +28,10 @@ public class NoteServiceImpl implements NoteService{
         else{
             note.setTitle(createNoteRequest.getTitle());
             note.setBody(createNoteRequest.getBody());
-//            Note savedNote = noteRepository.save(note);
-//            foundUser.getNotes().add(savedNote);
+            Note savedNote = noteRepository.save(note);
+            foundUser.getNotes().add(savedNote);
             foundUser.getNotes().add(note);
-            userService.saveUser(foundUser);
+//            userService.saveUser(foundUser);
             return "New note created";
         }
     }
