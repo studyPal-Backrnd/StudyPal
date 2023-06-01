@@ -15,20 +15,20 @@ public class UserRegisterRequest {
     @JsonProperty("email")
     private String email;
 
-    @Size(min = 8, max = 20)
-    @NotEmpty
-    @NotNull
     @JsonProperty("password")
+    @Size(min = 8, max = 20)
+    @NotEmpty(message = "field password cannot be empty")
+    @NotNull(message = "field password cannot be null")
     @Pattern(message = "invalid password", regexp = PASSWORD_REGEX_STRING)
     private String password;
 
-    @NotNull(message = "field name cannot be null")
-    @NotEmpty(message = "field name cannot be empty")
+    @NotNull(message = "field first name cannot be null")
+    @NotEmpty(message = "field first name cannot be empty")
     @Pattern(message = "first name must only be letters", regexp = NAME_REGEX)
     private String firstName;
 
-    @NotNull(message = "field name cannot be null")
-    @NotEmpty(message = "field name cannot be empty")
+    @NotNull(message = "field last name cannot be null")
+    @NotEmpty(message = "field last name cannot be empty")
     @Pattern(message = "last name must only be letters", regexp = NAME_REGEX)
     private String lastName;
 

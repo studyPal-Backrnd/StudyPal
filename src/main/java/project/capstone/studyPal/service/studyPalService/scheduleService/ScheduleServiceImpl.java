@@ -1,7 +1,6 @@
 package project.capstone.studyPal.service.studyPalService.scheduleService;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import project.capstone.studyPal.data.models.Schedule;
 import project.capstone.studyPal.data.repository.ScheduleRepository;
@@ -9,9 +8,7 @@ import project.capstone.studyPal.dto.request.CreateScheduleRequest;
 import project.capstone.studyPal.exception.DateTimeException;
 import project.capstone.studyPal.exception.LogicException;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -19,23 +16,23 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class ScheduleServiceImpl implements ScheduleService{
+public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
+
     @Override
     public Schedule createASchedule(CreateScheduleRequest createScheduleRequest) throws DateTimeException {
+        validateDateTime(createScheduleRequest.getStartDateTime());
+        validateDateTime(createScheduleRequest.getEndDateTime());
         Schedule schedule = new Schedule();
-        validateDate(createScheduleRequest.getStartDate());
-        validateDate(createScheduleRequest.getEndDate());
-        validateTime(createScheduleRequest.getStartTime());
-//        validateTime(createScheduleRequest.getEndTime());
-        if(!(createScheduleRequest.getEndTime().isAfter(schedule.getStartTime())))
-            throw new DateTimeException("The end time must be after the start time");
         schedule.setPurpose(createScheduleRequest.getPurpose());
-        schedule.setStartDate(createScheduleRequest.getStartDate());
-        schedule.setEndDate(createScheduleRequest.getEndDate());
-        schedule.setStartTime(createScheduleRequest.getStartTime());
-        schedule.setEndTime(createScheduleRequest.getEndTime());
+        schedule.setStartDateTime(createScheduleRequest.getStartDateTime());
+        schedule.setEndDateTime(createScheduleRequest.getEndDateTime());
         return schedule;
+    }
+
+    private void validateDateTime(LocalDateTime dateTime) {
+        if(dateTime.isBefore(LocalDateTime.now()))
+            throw new DateTimeException("Date time cannot be in the past");
     }
 
 
@@ -47,7 +44,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public Schedule getScheduleById(Long scheduleId) throws LogicException {
         return scheduleRepository.findById(scheduleId).orElseThrow(
-                ()-> new LogicException("Schedule not found or schedule is deleted"));
+                () -> new LogicException("Schedule not found or schedule is deleted"));
     }
 
     @Override
@@ -58,14 +55,5 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public void deleteScheduleById(Long scheduleId) {
         scheduleRepository.deleteById(scheduleId);
-    }
-
-    private static void validateDate(LocalDate date) throws DateTimeException {
-        if (date.isBefore(LocalDate.now()))
-            throw new DateTimeException("Invalid date. Date cannot be the past");
-    }
-    private static void validateTime(LocalTime localTime) throws DateTimeException {
-        if (localTime.isBefore(LocalTime.now()))
-            throw new DateTimeException("Invalid time. Time cannot be the past");
     }
 }

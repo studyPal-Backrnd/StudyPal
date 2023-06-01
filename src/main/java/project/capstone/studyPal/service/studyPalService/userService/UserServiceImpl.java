@@ -66,6 +66,23 @@ public class UserServiceImpl implements UserService {
         sendVerificationMail(savedAppUser);
     }
 
+//    @Override
+//    public String verifyAccount(String verificationToken){
+//        MyToken receivedToken = myTokenService.findMyTokenByToken(verificationToken);
+////        if(LocalTime.now().isBefore(receivedToken.getCreatedAt().plusMinutes(30L))){
+//        if(LocalTime.now().isAfter(receivedToken.getExpiryTime()))
+//            throw new RegistrationException("Token is expired.");
+//        else if(LocalTime.now().isBefore(receivedToken.getExpiryTime())){
+//            AppUser appUser = receivedToken.getUser();
+//            appUser.setEnabled(true);
+//            userRepository.save(appUser);
+//            myTokenService.deleteVerificationToken(verificationToken);
+//        }
+//        else
+//            throw new RegistrationException("Token is invalid");
+//        return "Account verified";
+//    }
+
     @Override
     public UserResponse verifyAccount(@NotNull VerifyRequest verifyRequest) throws RegistrationException {
         if (getUserByEmail(verifyRequest.getEmail()) == null) throw new LogicException("invalid email");
@@ -88,7 +105,6 @@ public class UserServiceImpl implements UserService {
         AppUser appUser = getUserByEmail(loginRequest.getEmail());
         if (appUser == null || !appUser.getPassword().equals(loginRequest.getEmail())) throw new LogicException("Email or password incorrect");
         if (!appUser.isEnabled()) throw new LogicException("verify your account");
-
         return getUserResponse(appUser);
     }
 

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class Recipient {
+public class  Recipient {
     private String name;
     private String email;
 }
