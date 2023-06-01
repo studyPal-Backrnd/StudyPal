@@ -19,7 +19,7 @@ public class UserRegisterRequest {
     @Size(min = 8, max = 20)
     @NotEmpty(message = "field password cannot be empty")
     @NotNull(message = "field password cannot be null")
-    @Pattern(message = "invalid password", regexp = PASSWORD_REGEX_STRING)
+    @Pattern(message = "password must contain at least one uppercase letter, at least one lower case letter, at least a digit and at least a special letter (@$!%*?&)", regexp = PASSWORD_REGEX_STRING)
     private String password;
 
     @NotNull(message = "field first name cannot be null")
