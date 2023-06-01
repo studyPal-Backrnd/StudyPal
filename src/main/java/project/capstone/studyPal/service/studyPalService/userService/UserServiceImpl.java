@@ -13,9 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import project.capstone.studyPal.data.models.AppUser;
 import project.capstone.studyPal.data.repository.TokenRepository;
 import project.capstone.studyPal.data.repository.UserRepository;
-import project.capstone.studyPal.dto.request.EmailNotificationRequest;
-import project.capstone.studyPal.dto.request.Recipient;
-import project.capstone.studyPal.dto.request.UserRegisterRequest;
+import project.capstone.studyPal.dto.request.*;
 import project.capstone.studyPal.dto.response.Token;
 import project.capstone.studyPal.dto.response.UserResponse;
 import project.capstone.studyPal.exception.ImageUploadException;
@@ -27,6 +25,7 @@ import project.capstone.studyPal.service.cloudService.CloudService;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -67,13 +66,33 @@ public class UserServiceImpl implements UserService {
         sendVerificationMail(savedAppUser);
     }
 
+//    @Override
+//    public String verifyAccount(String verificationToken){
+//        MyToken receivedToken = myTokenService.findMyTokenByToken(verificationToken);
+////        if(LocalTime.now().isBefore(receivedToken.getCreatedAt().plusMinutes(30L))){
+//        if(LocalTime.now().isAfter(receivedToken.getExpiryTime()))
+//            throw new RegistrationException("Token is expired.");
+//        else if(LocalTime.now().isBefore(receivedToken.getExpiryTime())){
+//            AppUser appUser = receivedToken.getUser();
+//            appUser.setEnabled(true);
+//            userRepository.save(appUser);
+//            myTokenService.deleteVerificationToken(verificationToken);
+//        }
+//        else
+//            throw new RegistrationException("Token is invalid");
+//        return "Account verified";
+//    }
+
     @Override
-    public UserResponse verifyAccount(String email, String verificationCode) throws RegistrationException {
-        if (getUserByEmail(email) == null) throw new LogicException("invalid email");
-        AppUser appUser = getUserByEmail(email);
-        Optional<Token> token = tokenRepository.findTokenByUserAndOtp(appUser, verificationCode);
+    public UserResponse verifyAccount(@NotNull VerifyRequest verifyRequest) throws RegistrationException {
+        if (getUserByEmail(verifyRequest.getEmail()) == null) throw new LogicException("invalid email");
+        AppUser appUser = getUserByEmail(verifyRequest.getEmail());
+        Optional<Token> token = tokenRepository.findTokenByUserAndOtp(appUser, verifyRequest.getVerificationToken());
         if (token.isEmpty()) throw new LogicException("invalid token");
-        if (token.get().getExpiryTime().isBefore(LocalDateTime.now())) throw new LogicException("expired token");
+        if (token.get().getExpiryTime().isBefore(LocalDateTime.now())) {
+            tokenRepository.delete(token.get());
+            throw new LogicException("expired token");
+        }
         appUser.setEnabled(true);
         updateUser(appUser);
         tokenRepository.delete(token.get());
@@ -82,11 +101,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse login(String email, String password) throws LogicException {
-        AppUser appUser = getUserByEmail(email);
-        if (appUser == null || !appUser.getPassword().equals(password)) throw new LogicException("Email or password incorrect");
+    public UserResponse login(LoginRequest loginRequest) throws LogicException {
+        AppUser appUser = getUserByEmail(loginRequest.getEmail());
+        if (appUser == null || !appUser.getPassword().equals(loginRequest.getEmail())) throw new LogicException("Email or password incorrect");
         if (!appUser.isEnabled()) throw new LogicException("verify your account");
-
         return getUserResponse(appUser);
     }
 
@@ -172,6 +190,8 @@ public class UserServiceImpl implements UserService {
         emailNotificationRequest.setHtmlContent(
                 "To activate your Study Pal account enter the following digits on your web browser\n\n"
                         + otp);
+        Optional<Token> existingToken = tokenRepository.findTokenByUser(appUser);
+        existingToken.ifPresent(tokenRepository::delete);
         token = new Token(appUser, otp);
         tokenRepository.save(token);
         mailService.sendHtmlMail(emailNotificationRequest);
@@ -179,6 +199,7 @@ public class UserServiceImpl implements UserService {
 
     private void updateProfilePicture(String imageUrl, @NotNull AppUser appUser) {
         appUser.setProfileImage(imageUrl);
+        updateUser(appUser);
     }
 
 
