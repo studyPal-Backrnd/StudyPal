@@ -1,7 +1,9 @@
 package project.capstone.studyPal.service.studyPalService.userService;
 
 import project.capstone.studyPal.data.models.AppUser;
+import project.capstone.studyPal.dto.request.LoginRequest;
 import project.capstone.studyPal.dto.request.UserRegisterRequest;
+import project.capstone.studyPal.dto.request.VerifyRequest;
 import project.capstone.studyPal.dto.response.UserResponse;
 import project.capstone.studyPal.exception.LogicException;
 import project.capstone.studyPal.exception.RegistrationException;
@@ -42,9 +44,10 @@ class AppUserServiceImplTest {
 
     @Test
     void verifyUserAccount() {
+        VerifyRequest verifyRequest = new VerifyRequest("samuelshola14@gmail.com", "5218");
         UserResponse appUser;
         try {
-            appUser = userService.verifyAccount("samuelshola14@gmail.com", "5218");
+            appUser = userService.verifyAccount(verifyRequest);
         } catch (RegistrationException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -54,7 +57,8 @@ class AppUserServiceImplTest {
 
     @Test
     void verifyUserAtLogin() {
-        assertThrows(RuntimeException.class, ()->userService.login("owoblowpeter@gmail.com", "testPassword34!"));
+        LoginRequest loginRequest = new LoginRequest("owoblowpeter@gmail.com", "testPassword34!");
+        assertThrows(RuntimeException.class, ()->userService.login(loginRequest));
     }
 
 }
