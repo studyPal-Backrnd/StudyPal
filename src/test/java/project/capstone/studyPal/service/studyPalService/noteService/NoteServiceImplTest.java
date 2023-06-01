@@ -63,11 +63,11 @@ class NoteServiceImplTest {
     @Test
     void noteCount() {
         Long noteCount = noteService.noteCount();
-        assertThat(noteCount).isEqualTo(2);
+        assertThat(noteCount).isEqualTo(3);
     }
     @Test
     void getAllNotes() {
-        assertThat(noteService.noteCount()).isEqualTo(2);
+        assertThat(noteService.noteCount()).isEqualTo(3);
     }
 
 
@@ -80,6 +80,7 @@ class NoteServiceImplTest {
     @Test
     void deleteNote() {
         String response = noteService.deleteNote(3L);
+        assertThat(noteService.noteCount()).isEqualTo(2);
         assertThat(response).isEqualTo("Note deleted");
     }
 }

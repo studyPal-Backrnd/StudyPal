@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 //import org.hibernate.annotations.CreationTimestamp;
 
 
@@ -34,7 +36,8 @@ public class AppUser {
     @CreationTimestamp
     private final LocalDateTime createdDate = LocalDateTime.now();
     private boolean isEnabled = false;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Note> notes;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Shelf shelf = new Shelf();
