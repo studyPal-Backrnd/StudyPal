@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,8 +16,7 @@ public class CreateScheduleRequest {
 
     @Pattern(message = "The purpose can only be letters with minimal numbers", regexp = "^(?:[a-zA-Z]*[0-9]){0,3}[a-zA-Z]+[a-zA-Z0-9]*$")
     private String purpose;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
+
 }
