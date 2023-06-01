@@ -49,12 +49,6 @@ public class UserController {
  return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
  }
 
- @PostMapping("resetpassword")
- public ResponseEntity <?> resetPassword(@RequestParam String verificationToken) {
-  userService.resetPassword(verificationToken);
-  return ResponseEntity.ok("check your mail for password reset link");
- }
-
  @PostMapping("sendlink")
  public ResponseEntity<?> sendResetPasswordLink(@RequestParam String emailAddress){
   userService.sendResetPasswordMail(emailAddress);
