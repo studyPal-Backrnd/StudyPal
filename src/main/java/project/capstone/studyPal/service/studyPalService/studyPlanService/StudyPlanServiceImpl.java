@@ -38,14 +38,9 @@ public class StudyPlanServiceImpl implements StudyPlanService{
             validateStudyPlanDate(createStudyPlanRequest.getStartDate());
             validateStudyPlanDate(createStudyPlanRequest.getEndDate());
             StudyPlan studyPlan = new StudyPlan();
-            Set<Schedule> newSchedules = new HashSet<>();
             studyPlan.setTitle(createStudyPlanRequest.getTitle());
             studyPlan.setDescription(createStudyPlanRequest.getDescription());
-            for(CreateScheduleRequest newSchedule : createStudyPlanRequest.getScheduleRequests()){
-                Schedule createdSchedule = scheduleService.createASchedule(newSchedule);
-                newSchedules.add(createdSchedule);
-            }
-            Set<Schedule> savedSchedules = scheduleService.saveAllSchedules(newSchedules);
+            Set<Schedule> savedSchedules = getCreatedSchedules(createStudyPlanRequest.getScheduleRequests());
             studyPlan.setSchedules(savedSchedules);
             studyPlan.setCreatedDate(createStudyPlanRequest.getStartDate());
             studyPlan.setEndDate(createStudyPlanRequest.getEndDate());
@@ -69,16 +64,11 @@ public class StudyPlanServiceImpl implements StudyPlanService{
     @Override
     public String updateStudyPlan(@NotNull UpdateStudyPlanRequest updateStudyPlanRequest) throws DateTimeException {
         StudyPlan foundStudyPlan = getStudyPlanById(updateStudyPlanRequest.getStudyPlanId());
-        Set<Schedule> updatedSchedules = new HashSet<>();
         foundStudyPlan.setTitle(updateStudyPlanRequest.getTitle());
         foundStudyPlan.setDescription(updateStudyPlanRequest.getDescription());
         foundStudyPlan.setCreatedDate(updateStudyPlanRequest.getStartDate());
         foundStudyPlan.setEndDate(updateStudyPlanRequest.getEndDate());
-        for(CreateScheduleRequest updateSchedule : updateStudyPlanRequest.getCreateScheduleRequests()){
-            Schedule createdSchedule = scheduleService.createASchedule(updateSchedule);
-            updatedSchedules.add(createdSchedule);
-        }
-        Set<Schedule> savedSchedules = scheduleService.saveAllSchedules(updatedSchedules);
+        Set<Schedule> savedSchedules = getCreatedSchedules(updateStudyPlanRequest.getCreateScheduleRequests());
         foundStudyPlan.setSchedules(savedSchedules);
         foundStudyPlan.setCreatedDate(updateStudyPlanRequest.getStartDate());
         foundStudyPlan.setEndDate(updateStudyPlanRequest.getEndDate());
@@ -101,4 +91,14 @@ public class StudyPlanServiceImpl implements StudyPlanService{
     public Long studyPlanCount() {
         return studyPlanRepository.count();
     }
+
+    private Set<Schedule> getCreatedSchedules(@NotNull Set<CreateScheduleRequest> createScheduleRequests) {
+        Set<Schedule> newSchedules = new HashSet<>();
+        for(CreateScheduleRequest newSchedule : createScheduleRequests){
+            Schedule createdSchedule = scheduleService.createASchedule(newSchedule);
+            newSchedules.add(createdSchedule);
+        }
+        return scheduleService.saveAllSchedules(newSchedules);
+    }
+
 }
