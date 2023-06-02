@@ -1,7 +1,6 @@
 package project.capstone.studyPal.service.studyPalService.studyPlanService;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import project.capstone.studyPal.data.models.AppUser;
@@ -18,23 +17,23 @@ import project.capstone.studyPal.service.studyPalService.scheduleService.Schedul
 import project.capstone.studyPal.service.studyPalService.userService.UserService;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class StudyPlanServiceImpl implements StudyPlanService{
+public class StudyPlanServiceImpl implements StudyPlanService {
     private final StudyPlanRepository studyPlanRepository;
     private final ScheduleService scheduleService;
     private final UserService userService;
+
     @Override
     public String createStudyPlan(@NotNull CreateStudyPlanRequest createStudyPlanRequest) throws DateTimeException {
         AppUser foundUser = userService.getUserById(createStudyPlanRequest.getUserId());
-        if(!(foundUser.isEnabled()))
+        if (!(foundUser.isEnabled()))
             throw new LogicException("User is not enabled");
-        else{
+        else {
             validateStudyPlanDate(createStudyPlanRequest.getStartDate());
             validateStudyPlanDate(createStudyPlanRequest.getEndDate());
             StudyPlan studyPlan = new StudyPlan();
@@ -51,14 +50,14 @@ public class StudyPlanServiceImpl implements StudyPlanService{
     }
 
     private void validateStudyPlanDate(LocalDate date) {
-        if(date.isBefore(LocalDate.now()))
+        if (date.isBefore(LocalDate.now()))
             throw new DateTimeException("Date cannot be in the past");
     }
 
     @Override
     public StudyPlan getStudyPlanById(Long studyPlanId) {
         return studyPlanRepository.findById(studyPlanId).orElseThrow(
-                ()-> new NotFoundException("Study plan not found or study deleted"));
+                () -> new NotFoundException("Study plan not found or study deleted"));
     }
 
     @Override
@@ -94,11 +93,10 @@ public class StudyPlanServiceImpl implements StudyPlanService{
 
     private Set<Schedule> getCreatedSchedules(@NotNull Set<CreateScheduleRequest> createScheduleRequests) {
         Set<Schedule> newSchedules = new HashSet<>();
-        for(CreateScheduleRequest newSchedule : createScheduleRequests){
+        for (CreateScheduleRequest newSchedule : createScheduleRequests) {
             Schedule createdSchedule = scheduleService.createASchedule(newSchedule);
             newSchedules.add(createdSchedule);
         }
         return scheduleService.saveAllSchedules(newSchedules);
     }
-
 }
