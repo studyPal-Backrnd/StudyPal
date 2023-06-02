@@ -20,6 +20,7 @@ import project.capstone.studyPal.service.studyPalService.userService.UserService
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -86,7 +87,19 @@ public class StudyPlanServiceImpl implements StudyPlanService{
     }
 
     @Override
-    public void deleteStudyPlan(Long studyPlanId) {
+    public String deleteStudyPlan(Long studyPlanId) {
         studyPlanRepository.deleteById(studyPlanId);
+        return "Study plan deleted";
     }
+
+    @Override
+    public List<StudyPlan> getAllStudyPlans() {
+        return studyPlanRepository.findAll();
+    }
+
+    @Override
+    public Long studyPlanCount() {
+        return studyPlanRepository.count();
+    }
+
 }

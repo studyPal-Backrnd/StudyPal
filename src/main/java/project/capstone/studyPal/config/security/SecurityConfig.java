@@ -33,7 +33,7 @@ public class SecurityConfig {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final ObjectMapper objectMapper;
-    private final String[] AUTHENTICATION_WHITE_LIST = {"/api/v1/studypal/registerUser", "/api/v1/studypal/verify", "/api/v1/studypal/login"};
+    private final String[] AUTHENTICATION_WHITE_LIST = {"/api/v1/studypal/register", "/api/v1/studypal/verify", "/api/v1/studypal/login"};
 //    private final AuthenticationEntryPoint authenticationEntryPoint;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -74,7 +74,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
+//        configuration.setAllowCredentials(true);
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
