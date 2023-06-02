@@ -102,8 +102,4 @@ public class StudyPlanServiceImpl implements StudyPlanService{
         return studyPlanRepository.count();
     }
 
-    @Override
-    public List<StudyPlan> getAllStudyPlans() {
-        return null;
-    }
 }
