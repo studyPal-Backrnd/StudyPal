@@ -12,6 +12,7 @@ public interface StudyPlanService {
     String createStudyPlan(CreateStudyPlanRequest createStudyPlanRequest) throws DateTimeException;
     StudyPlan getStudyPlanById(Long studyPlanId)throws NotFoundException;
     String updateStudyPlan(UpdateStudyPlanRequest updateStudyPlanRequest)throws NotFoundException, DateTimeException;
-    void deleteStudyPlan(Long studyPlanId);
     List<StudyPlan> getAllStudyPlans();
+    Long studyPlanCount();
+    String deleteStudyPlan(Long studyPlanId);
 }

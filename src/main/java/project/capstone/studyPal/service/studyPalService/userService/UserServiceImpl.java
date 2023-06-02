@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.bytebuddy.utility.RandomString;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.capstone.studyPal.data.models.AppUser;
@@ -41,6 +42,7 @@ public class UserServiceImpl implements UserService {
     private final TokenRepository tokenRepository;
     private final CloudService cloudService;
     private final ModelMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public AppUser getUserByEmail(String email) throws LogicException {
@@ -57,6 +59,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(UserRegisterRequest userDto) {
         AppUser appUser = mapper.map(userDto, AppUser.class);
+        appUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         try {
             validateEmail(appUser.getEmail());
         } catch (RegistrationException e) {

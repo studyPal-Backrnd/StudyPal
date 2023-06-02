@@ -87,8 +87,19 @@ public class StudyPlanServiceImpl implements StudyPlanService{
     }
 
     @Override
-    public void deleteStudyPlan(Long studyPlanId) {
+    public String deleteStudyPlan(Long studyPlanId) {
         studyPlanRepository.deleteById(studyPlanId);
+        return "Study plan deleted";
+    }
+
+    @Override
+    public List<StudyPlan> getAllStudyPlans() {
+        return studyPlanRepository.findAll();
+    }
+
+    @Override
+    public Long studyPlanCount() {
+        return studyPlanRepository.count();
     }
 
     @Override

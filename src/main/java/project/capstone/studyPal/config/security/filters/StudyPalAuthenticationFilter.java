@@ -63,7 +63,7 @@ public class StudyPalAuthenticationFilter extends UsernamePasswordAuthentication
                         .collect(Collectors.toMap(k->"claim", v->v));
 
         String accessToken = Jwts.builder()
-                                .setIssuer("uber_deluxe")
+                                .setIssuer("study_pal")
                                 .setIssuedAt(new Date())
                                 .setClaims(claims)
                                 .setExpiration(Date.from(Instant.now()
