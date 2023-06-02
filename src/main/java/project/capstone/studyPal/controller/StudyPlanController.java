@@ -11,7 +11,7 @@ import project.capstone.studyPal.dto.request.UpdateStudyPlanRequest;
 import project.capstone.studyPal.exception.DateTimeException;
 import project.capstone.studyPal.service.studyPalService.studyPlanService.StudyPlanService;
 @AllArgsConstructor
-@RequestMapping("api/v1/studypal/studyPlan")
+@RequestMapping("api/v1/studypal/studyplan")
 @RestController
 public class StudyPlanController {
 
@@ -22,7 +22,7 @@ public class StudyPlanController {
         return new ResponseEntity<>(studyPlanService.createStudyPlan(request), HttpStatus.CREATED);
     }
 
-    @GetMapping("get")
+    @GetMapping("{id}")
     public ResponseEntity<StudyPlan> getStudyPlanById(@Valid @PathVariable long id) {
         return new ResponseEntity<>(studyPlanService.getStudyPlanById(id), HttpStatus.OK);
     }
