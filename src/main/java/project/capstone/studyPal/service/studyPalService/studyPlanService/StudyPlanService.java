@@ -15,5 +15,4 @@ public interface StudyPlanService {
     List<StudyPlan> getAllStudyPlans();
     Long studyPlanCount();
     String deleteStudyPlan(Long studyPlanId);
-
 }
