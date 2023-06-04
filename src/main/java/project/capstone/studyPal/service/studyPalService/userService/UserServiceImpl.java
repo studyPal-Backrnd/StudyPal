@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse login(LoginRequest loginRequest) throws LogicException {
+    public UserResponse login(@NotNull LoginRequest loginRequest) throws LogicException {
         AppUser appUser = getUserByEmail(loginRequest.getEmail());
         if (appUser == null || !appUser.getPassword().equals(loginRequest.getEmail())) throw new LogicException("Email or password incorrect");
         if (!appUser.isEnabled()) throw new LogicException("verify your account");
@@ -112,30 +112,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void resetPassword(String newPassword) throws RegistrationException, LogicException {
-        if (token.getExpiryTime().isAfter(LocalDateTime.now())) throw new RegistrationException("reset token not found");
-        AppUser appUser = getUserByEmail(token.getUser().getEmail());
+    public void resetPassword(String email, String otp, String newPassword) throws RegistrationException, LogicException {
+        Optional<Token> token = tokenRepository.findTokenByUserAndOtp(getUserByEmail(email), otp);
+        if (token.isEmpty()) throw new LogicException("No token found");
+        if (token.get().getExpiryTime().isBefore(LocalDateTime.now())) {
+            tokenRepository.delete(token.get());
+            throw new RegistrationException("reset token not found");
+        }
+        AppUser appUser = getUserByEmail(token.get().getUser().getEmail());
         appUser.setPassword(newPassword);
         updateUser(appUser);
     }
 
     @Override
     public void sendResetPasswordMail(String email) {
-        AppUser user;
+        AppUser user = getUserByEmail(email);
+        String oneTimeResetPassword = RandomString.make(15);
         emailNotificationRequest = new EmailNotificationRequest();
-        try {
-            user = getUserByEmail(email);
-        } catch (LogicException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-        String oneTimeResetPassword = RandomString.make(45);
-        token = new Token(user, oneTimeResetPassword);
         Recipient recipient = new Recipient(user.getFirstName(), user.getEmail());
+        
         emailNotificationRequest.getTo().add(recipient);
         emailNotificationRequest.setSubject("Reset Password");
-        emailNotificationRequest.setHtmlContent(" " + oneTimeResetPassword);
+        emailNotificationRequest.setHtmlContent(
+                "Hello, "+user.getFirstName()+"\nhttp://localhost:9000/api/v1/studypal/resetpassword"+"?email="+email+"&token="+oneTimeResetPassword+
+                        "\nclick on the above link to change your password");
+        
+        buildToken(user, oneTimeResetPassword);
         mailService.sendHtmlMail(emailNotificationRequest);
-
     }
 
     @Override
@@ -162,20 +165,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public void uploadProfileImage(MultipartFile profileImage, Long userId) throws ImageUploadException {
         Optional<AppUser> user = userRepository.findById(userId);
-
         String imageUrl = cloudService.upload(profileImage);
         user.ifPresent(appUser -> updateProfilePicture(imageUrl, appUser));
-
     }
 
     @Override
     public void sendVerificationMail(@NotNull AppUser appUser) {
+        String otp = generateVerificationOTP();
         emailNotificationRequest = new EmailNotificationRequest();
         Recipient recipient = new Recipient(appUser.getFirstName(), appUser.getEmail());
+        
         emailNotificationRequest.getTo().add(recipient);
-
         emailNotificationRequest.setSubject("Activate Account");
-        String otp = generateVerificationOTP();
+        emailNotificationRequest.setHtmlContent(
+                "To activate your Study Pal account enter the following digits on your web browser\n\n"
+                        + otp);
 
 //        File tokenFile = new File("/src/main/resources/verification-mail.html");
 //        FileWriter fileWriter;
@@ -190,14 +194,15 @@ public class UserServiceImpl implements UserService {
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
-        emailNotificationRequest.setHtmlContent(
-                "To activate your Study Pal account enter the following digits on your web browser\n\n"
-                        + otp);
+        buildToken(appUser, otp);
+        mailService.sendHtmlMail(emailNotificationRequest);
+    }
+
+    private void buildToken(@NotNull AppUser appUser, String otp) {
         Optional<Token> existingToken = tokenRepository.findTokenByUser(appUser);
         existingToken.ifPresent(tokenRepository::delete);
         token = new Token(appUser, otp);
         tokenRepository.save(token);
-        mailService.sendHtmlMail(emailNotificationRequest);
     }
 
     private void updateProfilePicture(String imageUrl, @NotNull AppUser appUser) {

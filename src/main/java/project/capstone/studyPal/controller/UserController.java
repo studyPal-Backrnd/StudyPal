@@ -2,11 +2,13 @@ package project.capstone.studyPal.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.capstone.studyPal.data.models.AppUser;
 import project.capstone.studyPal.dto.request.LoginRequest;
+import project.capstone.studyPal.dto.request.NewPasswordRequest;
 import project.capstone.studyPal.dto.request.UserRegisterRequest;
 import project.capstone.studyPal.dto.request.VerifyRequest;
 import project.capstone.studyPal.dto.response.UserResponse;
@@ -32,7 +34,7 @@ public class UserController {
 }
 
 @GetMapping("{name}")
- public ResponseEntity<?> getUserByEmail(@Valid @PathVariable(value = "name") String name,  @RequestParam String email){
+ public ResponseEntity<?> getUserByEmail(@Valid @PathVariable(value = "name") String name, @Valid @RequestParam String email){
   AppUser foundUser = userService.getUserByEmail(email);
   return ResponseEntity.status(HttpStatus.OK).body(foundUser);
 }
@@ -50,15 +52,15 @@ public class UserController {
  return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
  }
 
- @PostMapping("sendlink")
+ @GetMapping("resetpassword")
  public ResponseEntity<?> sendResetPasswordLink(@Valid @RequestParam String emailAddress){
   userService.sendResetPasswordMail(emailAddress);
   return ResponseEntity.status(HttpStatus.OK).body("check your mail for password reset link");
  }
 
- @PostMapping("changepassword")
- public ResponseEntity<?> changePassword(@Valid @RequestParam String newPassword){
-  userService.resetPassword(newPassword);
+ @PostMapping("resetpassword")
+ public ResponseEntity<?> changePassword(@Valid @RequestParam String email, @RequestParam String token, @RequestBody @NotNull NewPasswordRequest newPasswordRequest){
+  userService.resetPassword(email, token, newPasswordRequest.getPassword());
   return ResponseEntity.status(HttpStatus.OK).body("password changed successfully");
  }
 

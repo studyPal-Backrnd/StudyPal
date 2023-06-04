@@ -23,11 +23,9 @@ public interface UserService {
     UserResponse verifyAccount(VerifyRequest verifyRequest) throws RegistrationException;
     void sendResetPasswordMail(String email) throws LogicException;
     UserResponse login(LoginRequest loginRequest) throws LogicException;
-    void resetPassword(String newPassword) throws RegistrationException, LogicException;
+    void resetPassword(String email, String otp, String newPassword) throws RegistrationException, LogicException;
     AppUser updateUser(Long userId, JsonPatch updatePayLoad);
     void updateUser(AppUser user);
     void uploadProfileImage(MultipartFile profileImage, Long userId) throws ImageUploadException;
     void sendVerificationMail(@NotNull AppUser appUser);
-
-
 }
