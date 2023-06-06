@@ -27,17 +27,17 @@ class NoteServiceImplTest {
         createNoteRequest1.setBody("This is my first note in study pal web application");
 
         createNoteRequest2 = new CreateNoteRequest();
-        createNoteRequest2.setUserId(2L);
+        createNoteRequest2.setUserId(1L);
         createNoteRequest2.setTitle("My second nto in study pal");
         createNoteRequest2.setBody("This is the second note in study pal web application");
 
         createNoteRequest3 = new CreateNoteRequest();
-        createNoteRequest3.setUserId(2L);
+        createNoteRequest3.setUserId(1L);
         createNoteRequest3.setTitle("My second nto in study pal");
         createNoteRequest3.setBody("This is the second note in study pal web application");
 
         updateNoteRequest = new UpdateNoteRequest();
-        updateNoteRequest.setNoteId(2L);
+        updateNoteRequest.setNoteId(1L);
         updateNoteRequest.setUpdateTitle("updating second note in study pal");
         updateNoteRequest.setUpdateBody("This is the second updated note in study pal");
     }

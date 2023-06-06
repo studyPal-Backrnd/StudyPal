@@ -63,8 +63,12 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
-    public String deleteNote(Long noteId) {
+    public void deleteNote(Long noteId) {
         noteRepository.deleteById(noteId);
-        return "Note deleted";
+    }
+
+    @Override
+    public void deleteAllNotes() {
+        noteRepository.deleteAll();
     }
 }

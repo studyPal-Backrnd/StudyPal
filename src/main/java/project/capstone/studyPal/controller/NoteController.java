@@ -16,7 +16,7 @@ public class NoteController {
     private final NoteService noteService;
     @PostMapping("create")
     public ResponseEntity<String> createNote(@Valid @RequestBody CreateNoteRequest request){
-    return new ResponseEntity<>(noteService.createNote(request), HttpStatus.CREATED);
+    return ResponseEntity.ok(noteService.createNote(request));
     }
     @GetMapping("{id}")
     public ResponseEntity<Note> getNoteById(@Valid @PathVariable(value = "id") long noteId){
@@ -26,14 +26,20 @@ public class NoteController {
     public  ResponseEntity<String> updateNote(@Valid @RequestBody UpdateNoteRequest request){
         return new ResponseEntity<>(noteService.updateNote(request), HttpStatus.CONTINUE);
     }
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteNote(@Valid @PathVariable long id){
-         return new ResponseEntity<>(noteService.deleteNote(id), HttpStatus.OK);
-    }
-
-    @GetMapping("")
+    @GetMapping("get/all")
     public ResponseEntity<?> getAllNotes(){
         return new ResponseEntity<>(noteService.getAllNotes(), HttpStatus.OK);
     }
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteNote(@Valid @PathVariable long id){
+         noteService.deleteNote(id);
+         return ResponseEntity.ok("Note deleted");
+    }
+    @DeleteMapping("all/delete")
+    public ResponseEntity<?> deleteAllNotes(){
+        noteService.deleteAllNotes();
+        return ResponseEntity.ok("All notes deleted");
+    }
+
 
 }

@@ -18,7 +18,6 @@ public class CreateNoteRequest {
     @NotBlank(message = "Note title cannot be blank")
     @NotNull(message = "Note title cannot be null")
     @NotEmpty(message = "Note title cannot be empty")
-    @Pattern(message = "Note title can only be letters", regexp = "^[a-zA-Z]+$")
     private String title;
     @NotBlank(message = "Note body cannot be blank")
     @NotNull(message = "Note body cannot be null")

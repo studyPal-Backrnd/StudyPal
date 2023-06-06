@@ -33,8 +33,10 @@ public class SecurityConfig {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final ObjectMapper objectMapper;
-    private final String[] AUTHENTICATION_WHITE_LIST = {"/api/v1/studypal/register", "/api/v1/studypal/verify", "/api/v1/studypal/login"};
-//    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final UserDetailsService userDetails;
+    private final String[] AUTHENTICATION_WHITE_LIST = {"/api/v1/studypal/register", "/api/v1/studypal/verify", "/api/v1/studypal/login", "/api/v1/studypal/*"};
+
+    //    private final AuthenticationEntryPoint authenticationEntryPoint;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 //        UsernamePasswordAuthenticationFilter authenticationFilter = new StudyPalAuthenticationFilter(authenticationManager, jwtUtil);
@@ -54,10 +56,20 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(ConfigurationSource()))
-                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize.requestMatchers(HttpMethod.POST, AUTHENTICATION_WHITE_LIST).permitAll()
-                        .anyRequest().authenticated())
-                .addFilterAt(login(), StudyPalAuthenticationFilter.class)
+                .sessionManagement(
+                        sessionManagement ->
+                                sessionManagement.sessionCreationPolicy(
+                                        SessionCreationPolicy.STATELESS
+                                )
+                )
+                .authorizeHttpRequests(authorize ->
+                        authorize.requestMatchers(
+                                HttpMethod.POST, AUTHENTICATION_WHITE_LIST
+                                ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterAt(login(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new StudyPalAuthorizationFilter(userDetails, jwtUtil), StudyPalAuthenticationFilter.class)
                 .build();
     }
 

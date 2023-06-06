@@ -12,5 +12,6 @@ public interface NoteService {
     List<Note> getAllNotes();
     Long noteCount();
     String updateNote(UpdateNoteRequest updateNoteRequest);
-    String deleteNote(Long noteId);
+    void deleteNote(Long noteId);
+    void deleteAllNotes();
 }
