@@ -3,6 +3,7 @@ package project.capstone.studyPal.config.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,9 +30,13 @@ public class StudyPalAuthorizationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        ObjectMapper mapper = new ObjectMapper();
+    protected void doFilterInternal(
+            @Nonnull HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
+
         String authHeader = request.getHeader(AUTHORIZATION);
+
         if (request.getServletPath().equals("/api/v1/studypal/login")||
         request.getServletPath().equals("/api/v1/studypal/register")||
         request.getServletPath().equals("/api/v1/studypal/verify")){
@@ -40,7 +45,11 @@ public class StudyPalAuthorizationFilter extends OncePerRequestFilter {
             if (authHeader!=null&&authHeader.startsWith("Bearer ")){
                 String token = request.getHeader(HttpHeaders.AUTHORIZATION);
                 String jwt = token.substring("Bearer ".length());
-                var res = Jwts.parser().setSigningKey(jwtUtil.getJwtSecret()).isSigned(jwt);
+
+                var res = Jwts.parser()
+                        .setSigningKey(jwtUtil.getJwtSecret())
+                        .isSigned(jwt);
+
                 if (res){
                     List<String> roles = new ArrayList<>();
                     var jwtMap= Jwts.parser().setSigningKey(jwtUtil.getJwtSecret()).parseClaimsJws(jwt);
@@ -51,7 +60,7 @@ public class StudyPalAuthorizationFilter extends OncePerRequestFilter {
                     filterChain.doFilter(request, response);
                 }else{
                     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    mapper.writeValue(response.getOutputStream(), ApiResponse.builder().message("auth failed").build());
+                   new ObjectMapper().writeValue(response.getOutputStream(), ApiResponse.builder().message("auth failed").build());
                 }
             }
             filterChain.doFilter(request, response);
