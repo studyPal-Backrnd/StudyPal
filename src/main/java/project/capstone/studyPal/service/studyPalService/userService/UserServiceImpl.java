@@ -26,8 +26,6 @@ import project.capstone.studyPal.service.cloudService.CloudService;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Optional;
 
 
@@ -142,7 +140,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser updateUser(Long userId, @NotNull JsonPatch updatePayload) {
+    public UserResponse updateUser(Long userId, @NotNull JsonPatch updatePayload) {
         ObjectMapper mapper = new ObjectMapper();
         AppUser foundUser = userRepository.getReferenceById(userId);
         JsonNode node = mapper.convertValue(foundUser, JsonNode.class);
@@ -150,7 +148,7 @@ public class UserServiceImpl implements UserService {
             JsonNode updatedNode = updatePayload.apply(node);
             var updatedUser = mapper.convertValue(updatedNode, AppUser.class);
             updatedUser = userRepository.save(updatedUser);
-            return updatedUser;
+            return getUserResponse(updatedUser);
 
         } catch (JsonPatchException e) {
             throw new RuntimeException(e.getMessage());
@@ -163,10 +161,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void uploadProfileImage(MultipartFile profileImage, Long userId) throws ImageUploadException {
+    public UserResponse uploadProfileImage(MultipartFile profileImage, Long userId) throws ImageUploadException {
         Optional<AppUser> user = userRepository.findById(userId);
+        if (user.isEmpty()) throw new LogicException("user not found");
         String imageUrl = cloudService.upload(profileImage);
         user.ifPresent(appUser -> updateProfilePicture(imageUrl, appUser));
+        return getUserResponse(user.get());
     }
 
     @Override

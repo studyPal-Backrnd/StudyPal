@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ResourceMaterialRequest {
+    private Long userId;
     private String title;
     private String path;
 }

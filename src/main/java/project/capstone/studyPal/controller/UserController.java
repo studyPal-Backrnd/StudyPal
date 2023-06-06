@@ -1,11 +1,14 @@
 package project.capstone.studyPal.controller;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import project.capstone.studyPal.data.models.AppUser;
 import project.capstone.studyPal.dto.request.LoginRequest;
 import project.capstone.studyPal.dto.request.NewPasswordRequest;
@@ -62,6 +65,18 @@ public class UserController {
  public ResponseEntity<?> changePassword(@Valid @RequestParam String email, @RequestParam String token, @RequestBody @NotNull NewPasswordRequest newPasswordRequest){
   userService.resetPassword(email, token, newPasswordRequest.getPassword());
   return ResponseEntity.status(HttpStatus.OK).body("password changed successfully");
+ }
+
+ @PatchMapping(value = "{id}", consumes = {"application/json-patch+json"})
+ public ResponseEntity<?> updateUserProfile(@Valid @PathVariable(value = "id") Long userId, @Valid @RequestBody JsonPatch userRegisterRequest) {
+  UserResponse updatedUser = userService.updateUser(userId, userRegisterRequest);
+  return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+ }
+
+ @PostMapping(value = "/upload/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+ public ResponseEntity<?> uploadProfilePicture(@Valid @PathVariable(value = "id") Long userId, @RequestParam(value = "file") MultipartFile profileImage) {
+  UserResponse updatedUser = userService.uploadProfileImage(profileImage, userId);
+  return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
  }
 
 }
