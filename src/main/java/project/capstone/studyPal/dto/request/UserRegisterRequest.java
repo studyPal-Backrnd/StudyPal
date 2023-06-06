@@ -32,7 +32,7 @@ public class UserRegisterRequest {
     @Pattern(message = "last name must only be letters", regexp = NAME_REGEX)
     private String lastName;
 
-    @Pattern(message = "upload an image", regexp = IMAGE_REGEX)
-    private String image;
+//    @Pattern(message = "upload an image", regexp = IMAGE_REGEX)
+//    private String image;
 
 }

@@ -31,8 +31,8 @@ public class UserController {
  return ResponseEntity.ok(response);
 }
 
-@GetMapping("{name}")
- public ResponseEntity<?> getUserByEmail(@Valid @PathVariable(value = "name") String name,  @RequestParam String email){
+@GetMapping("get/email")
+ public ResponseEntity<?> getUserByEmail(@Valid @RequestParam String email){
   AppUser foundUser = userService.getUserByEmail(email);
   return ResponseEntity.status(HttpStatus.OK).body(foundUser);
 }

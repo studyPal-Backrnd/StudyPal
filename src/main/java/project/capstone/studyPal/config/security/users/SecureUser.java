@@ -23,8 +23,10 @@ public class SecureUser implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return appUser.getRole().getAuthorities();
-    }
+     return appUser.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+            .collect(Collectors.toList());
+}
 
     @Override
     public boolean isAccountNonExpired() {
