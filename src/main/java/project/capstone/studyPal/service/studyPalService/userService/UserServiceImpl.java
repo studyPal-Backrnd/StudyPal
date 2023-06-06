@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.capstone.studyPal.data.models.AppUser;
+import project.capstone.studyPal.data.models.Role;
 import project.capstone.studyPal.data.repository.TokenRepository;
 import project.capstone.studyPal.data.repository.UserRepository;
 import project.capstone.studyPal.dto.request.*;
@@ -26,6 +27,10 @@ import project.capstone.studyPal.service.cloudService.CloudService;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Objects;
+
 import java.util.Optional;
 
 
@@ -96,8 +101,9 @@ public class UserServiceImpl implements UserService {
         }
         appUser.setEnabled(true);
         updateUser(appUser);
+        appUser.setRoles(new HashSet<>());
+        appUser.getRoles().add(Role.STUDENT);
         tokenRepository.delete(token.get());
-
         return getUserResponse(appUser);
     }
 

@@ -63,5 +63,5 @@ public class AppUser {
     private String profileImage;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Set<Role> roles;
 }
