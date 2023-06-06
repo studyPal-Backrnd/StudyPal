@@ -38,8 +38,9 @@ public class StudyPalAuthorizationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader(AUTHORIZATION);
 
         if (request.getServletPath().equals("/api/v1/studypal/login")||
-        request.getServletPath().equals("/api/v1/studypal/register")||
-        request.getServletPath().equals("/api/v1/studypal/verify")){
+                request.getServletPath().equals("/api/v1/studypal/register")||
+                request.getServletPath().equals("/api/v1/studypal/resetpassword")||
+                request.getServletPath().equals("/api/v1/studypal/verify")){
             filterChain.doFilter(request, response);
         }else{
             if (authHeader!=null&&authHeader.startsWith("Bearer ")){

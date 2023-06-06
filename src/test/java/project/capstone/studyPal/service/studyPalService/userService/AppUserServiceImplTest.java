@@ -1,6 +1,7 @@
 package project.capstone.studyPal.service.studyPalService.userService;
 
 import project.capstone.studyPal.data.models.AppUser;
+import project.capstone.studyPal.data.repository.TokenRepository;
 import project.capstone.studyPal.dto.request.LoginRequest;
 import project.capstone.studyPal.dto.request.UserRegisterRequest;
 import project.capstone.studyPal.dto.request.VerifyRequest;
@@ -20,6 +21,8 @@ class AppUserServiceImplTest {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenRepository tokenRepository;
     UserRegisterRequest dto = new UserRegisterRequest();
     AppUser testAppUser = new AppUser();
 
@@ -56,9 +59,27 @@ class AppUserServiceImplTest {
     }
 
     @Test
+    void sendVerifyToken() {
+        userService.sendVerificationMail(userService.getUserByEmail("owoblowpeter@gmail.com"));
+
+    }
+
+    @Test
     void verifyUserAtLogin() {
         LoginRequest loginRequest = new LoginRequest("owoblowpeter@gmail.com", "testPassword34!");
         assertThrows(RuntimeException.class, ()->userService.login(loginRequest));
+    }
+
+    @Test
+    void sendResetPasswordLink() {
+        userService.sendResetPasswordMail("owoblowpeter@gmail.com");
+        assertTrue(tokenRepository.findTokenByUser(userService.getUserByEmail("owoblowpeter@gmail.com")).isPresent());
+    }
+
+    @Test
+    void changePassword(){
+        userService.resetPassword("owoblowpeter@gmail.com", "o8vipReRWhkY6kt", "Peteburg79!");
+        assertEquals("Peteburg79!", userService.getUserByEmail("owoblowpeter@gmail.com").getPassword());
     }
 
 }

@@ -18,7 +18,7 @@ import java.util.Set;
 public class StudyPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long studyPlanId;
     private String title;
     private String description;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

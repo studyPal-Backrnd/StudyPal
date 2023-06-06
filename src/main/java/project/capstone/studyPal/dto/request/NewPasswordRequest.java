@@ -5,12 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-public class ResourceMaterialRequest {
-    private Long userId;
-    private String title;
-    private String path;
+@NoArgsConstructor
+@AllArgsConstructor
+public class NewPasswordRequest {
+
+    private String password;
 }
