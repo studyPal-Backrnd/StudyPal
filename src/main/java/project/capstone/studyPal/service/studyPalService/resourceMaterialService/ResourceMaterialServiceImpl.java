@@ -7,6 +7,7 @@ import project.capstone.studyPal.data.repository.ResourceMaterialRepository;
 import project.capstone.studyPal.dto.request.ResourceMaterialRequest;
 import project.capstone.studyPal.exception.LogicException;
 import project.capstone.studyPal.service.studyPalService.shelfService.ShelfService;
+import project.capstone.studyPal.service.studyPalService.userService.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,7 @@ public class ResourceMaterialServiceImpl implements ResourceMaterialService{
 
     private final ResourceMaterialRepository resourceMaterialRepository;
     private final ShelfService shelfService;
+    private final UserService userService;
 
 
     @Override

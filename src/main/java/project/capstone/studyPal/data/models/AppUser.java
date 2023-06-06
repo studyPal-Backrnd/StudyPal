@@ -56,7 +56,7 @@ public class AppUser {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Shelf shelf = new Shelf();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<StudyPlan> studyPlans;
 
 //    @NotNull(message = "Image cannot be null")
