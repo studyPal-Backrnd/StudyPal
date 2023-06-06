@@ -42,8 +42,15 @@ public class AppUser {
 
     private boolean isEnabled = false;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinTable(
+            joinColumns = @JoinColumn(
+                    name = "app_user_id",
+                    foreignKey = @ForeignKey(foreignKeyDefinition = "foreign key (app_user_id) references app_user(id)")
+            ),inverseJoinColumns = @JoinColumn(
+                    name = "notes_id",
+            foreignKey = @ForeignKey(foreignKeyDefinition = "foreign key (notes_id) references notes(id)"))
+    )
     private List<Note> notes;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

@@ -21,7 +21,15 @@ public class StudyPlan {
     private Long studyPlanId;
     private String title;
     private String description;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinTable(
+            joinColumns = @JoinColumn(
+                    name = "study_plan_id",
+                    foreignKey = @ForeignKey(foreignKeyDefinition = "foreign key (study_plan_id) references study_plan(id)")
+            ),inverseJoinColumns = @JoinColumn(
+                    name = "schedules_id",
+                    foreignKey = @ForeignKey(foreignKeyDefinition = "foreign key (schedules_id) references schedules(id)"))
+    )
     private Set<Schedule> schedules;
     private LocalDate createdDate;
     private LocalDate endDate;
