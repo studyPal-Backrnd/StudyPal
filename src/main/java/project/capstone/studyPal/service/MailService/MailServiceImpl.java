@@ -19,7 +19,6 @@ import project.capstone.studyPal.dto.request.EmailNotificationRequest;
 public class MailServiceImpl implements MailService {
 
     private final MailConfig mailConfig;
-    private final TokenRepository tokenRepository;
     @Override
     public String sendHtmlMail(@NotNull EmailNotificationRequest request) {
         RestTemplate restTemplate = new RestTemplate();
