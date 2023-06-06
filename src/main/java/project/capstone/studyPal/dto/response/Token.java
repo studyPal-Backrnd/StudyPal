@@ -16,6 +16,15 @@ public class Token {
     private Long id;
     private String otp;
     @OneToOne
+//            (cascade = CascadeType.DETACH, fetch = FetchType.EAGER, orphanRemoval = true)
+//    @JoinTable(
+//            joinColumns = @JoinColumn(
+//                    name = "token_id",
+//                    foreignKey = @ForeignKey(foreignKeyDefinition = "foreign key (token_id) references token(id)")
+//            ),inverseJoinColumns = @JoinColumn(
+//            name = "user_id",
+//            foreignKey = @ForeignKey(foreignKeyDefinition = "foreign key (user_id) references user(id)"))
+//    )
     private AppUser user;
     private final LocalDateTime createdAt = LocalDateTime.now();
     private final LocalDateTime expiryTime = createdAt.plusMinutes(20L);
