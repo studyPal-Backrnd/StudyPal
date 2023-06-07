@@ -1,5 +1,6 @@
 package project.capstone.studyPal.service.studyPalService.userService;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
@@ -8,11 +9,10 @@ import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.bytebuddy.utility.RandomString;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import project.capstone.studyPal.data.models.AppUser;
-import project.capstone.studyPal.data.models.Role;
 import project.capstone.studyPal.data.repository.TokenRepository;
 import project.capstone.studyPal.data.repository.UserRepository;
 import project.capstone.studyPal.dto.request.*;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     private final TokenRepository tokenRepository;
     private final CloudService cloudService;
     private final ModelMapper mapper;
-    private final PasswordEncoder passwordEncoder;
+//    private final PasswordEncoder passwordEncoder;
 
     @Override
     public AppUser getUserByEmail(String email) throws LogicException {
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(UserRegisterRequest userDto) {
         AppUser appUser = mapper.map(userDto, AppUser.class);
-        appUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        appUser.setPassword(userDto.getPassword());
         try {
             validateEmail(appUser.getEmail());
         } catch (RegistrationException e) {
@@ -101,18 +101,21 @@ public class UserServiceImpl implements UserService {
         }
         appUser.setEnabled(true);
         updateUser(appUser);
-        appUser.setRoles(new HashSet<>());
-        appUser.getRoles().add(Role.STUDENT);
         tokenRepository.delete(token.get());
         return getUserResponse(appUser);
     }
 
     @Override
     public UserResponse login(@NotNull LoginRequest loginRequest) throws LogicException {
-        AppUser appUser = getUserByEmail(loginRequest.getEmail());
-        if (appUser == null || !appUser.getPassword().equals(loginRequest.getEmail())) throw new LogicException("Email or password incorrect");
-        if (!appUser.isEnabled()) throw new LogicException("verify your account");
-        return getUserResponse(appUser);
+//        AppUser appUser = getUserByEmail(loginRequest.getEmail());
+//        if (appUser == null || !appUser.getPassword().equals(loginRequest.getEmail())) throw new LogicException("Email or password incorrect");
+//        if (!appUser.isEnabled()) throw new LogicException("verify your account");
+//        return getUserResponse(appUser);
+        AppUser foundUser = getUserByEmail(loginRequest.getEmail());
+        if(foundUser.getPassword().equals(loginRequest.getPassword()))
+            return getUserResponse(foundUser);
+        else if (!foundUser.isEnabled())throw new LogicException("Verify your account");
+        else throw new RegistrationException("Incorrect email or password");
     }
 
     @Override

@@ -5,17 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.util.Set;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class UpdateStudyPlanRequest {
+public class GetNoteRequest {
     private Long userId;
-    private Long studyPlanId;
-    private String title;
-    private String description;
-    private Set<CreateScheduleRequest> createScheduleRequests;
+    private Long noteId;
 }

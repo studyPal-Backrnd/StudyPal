@@ -4,20 +4,22 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.reactive.function.client.WebClient;
-import project.capstone.studyPal.config.security.util.JwtUtil;
+import project.capstone.studyPal.data.repository.UserRepository;
 import project.capstone.studyPal.dto.request.EmailNotificationRequest;
 import project.capstone.studyPal.dto.response.Token;
+import project.capstone.studyPal.exception.NotFoundException;
 
 @Configuration
+@RequiredArgsConstructor
 public class AppConfig {
+    private final UserRepository userRepository;
 
     @Value("${cloudinary.cloud.name}")
     private String cloudName;
@@ -40,15 +42,10 @@ public class AppConfig {
     @Value("${jwt.secret.key}")
     private String jwtSecret;
 
-    @Bean
-    public JwtUtil jwtUtil(){
-        return new JwtUtil(jwtSecret);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder(){
+//        return new BCryptPasswordEncoder();
+//    }
     @Bean
     public MailConfig mailConfig(){
         return new MailConfig(mailApiKey, mailUrl);
@@ -59,10 +56,10 @@ public class AppConfig {
         return new ModelMapper();
     }
 
-    @Bean
-    public ObjectMapper objectMapper(){
-        return new ObjectMapper();
-    }
+//    @Bean
+//    public ObjectMapper objectMapper(){
+//        return new ObjectMapper();
+//    }
 
     @Bean
     public EmailNotificationRequest emailNotificationRequest() {
@@ -94,5 +91,10 @@ public class AppConfig {
                 )
         );
     }
-
+    @Bean
+    public ObjectMapper objectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper;
+    }
 }

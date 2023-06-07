@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -21,16 +22,22 @@ public class StudyPlan {
     private Long studyPlanId;
     private String title;
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinTable(
-            joinColumns = @JoinColumn(
-                    name = "study_plan_id",
-                    foreignKey = @ForeignKey(foreignKeyDefinition = "foreign key (study_plan_id) references study_plan(id)")
-            ),inverseJoinColumns = @JoinColumn(
-                    name = "schedules_id",
-                    foreignKey = @ForeignKey(foreignKeyDefinition = "foreign key (schedules_id) references schedules(id)"))
-    )
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
+//    @JoinTable(
+//            joinColumns = @JoinColumn(
+//                    name = "study_plan_id",
+//                    foreignKey = @ForeignKey(
+//                            foreignKeyDefinition = "foreign key (study_plan_id) references study_plan(id) ON DELETE CASCADE"
+//                    )),
+//            inverseJoinColumns = @JoinColumn(
+//                    name = "scedules_id",
+//                    foreignKey = @ForeignKey(
+//                            foreignKeyDefinition = "foreign key (schedules_id) references schedule(id) ON DELETE CASCADE"
+//                    ))
+//    )
+
     private Set<Schedule> schedules;
-    private LocalDate createdDate;
-    private LocalDate endDate;
+    private LocalDateTime updatedAt;
+//    private final LocalDateTime createAt = LocalDateTime.now();
 }
