@@ -20,7 +20,9 @@ public class ResourceMaterial {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String path;
+    private String description;
+    private String author;
+    private String link;
     @CreationTimestamp
     private LocalDateTime dateAdded = LocalDateTime.now();
  }
