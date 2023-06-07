@@ -15,7 +15,7 @@ import project.capstone.studyPal.service.studyPalService.scheduleService.Schedul
 import java.util.List;
 
 @AllArgsConstructor
-@RequestMapping("api/v1/studypal/schedule")
+@RequestMapping("api/v1/studypal/schedule/")
 @RestController
 public class ScheduleController {
 

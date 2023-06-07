@@ -17,14 +17,19 @@ public class Shelf {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinTable(
-            joinColumns = @JoinColumn(
-                    name = "shelf_id",
-                    foreignKey = @ForeignKey(foreignKeyDefinition = "foreign key (shelf_id) references shelf(id)")
-            ),inverseJoinColumns = @JoinColumn(
-                    name = "resource_materials_id",
-                    foreignKey =@ForeignKey(foreignKeyDefinition = "foreign key (resource_materials_id) references resource_materials(id"))
-    )
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
+//@JoinTable(
+//        joinColumns = @JoinColumn(
+//                name = "shelf_id",
+//                foreignKey = @ForeignKey(
+//                        foreignKeyDefinition = "foreign key (shelf_id) references shelf(id) ON DELETE CASCADE"
+//                )),
+//        inverseJoinColumns = @JoinColumn(
+//                name = "resource_materials_id",
+//                foreignKey = @ForeignKey(
+//                        foreignKeyDefinition = "foreign key (resource_materials_id) references resource_material(id) ON DELETE CASCADE"
+//                ))
+//)
     private List<ResourceMaterial> resourceMaterials = new ArrayList<>();
 }

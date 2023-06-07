@@ -24,18 +24,10 @@ public class CreateStudyPlanRequest {
     @NotBlank(message = "Cannot be blank")
     private String title;
 
-
     @NotNull(message = "Cannot be null")
     @NotEmpty(message = "Cannot be empty")
     @NotBlank(message = "Cannot be blank")
-    @Pattern(message = "Description should only contain letters and some numbers",
-            regexp = "^(?=(?:\\D*\\d){0,15}\\D*$)[a-zA-Z0-9 ]{1,250}$\n")
     private String description;
 
-
     private Set<CreateScheduleRequest> scheduleRequests;
-
-    private LocalDate startDate;
-
-    private LocalDate endDate;
 }

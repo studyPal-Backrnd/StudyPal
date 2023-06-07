@@ -1,7 +1,7 @@
-package project.capstone.studyPal.data.models;
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+//package project.capstone.studyPal.data.models;
+//
+//import lombok.Getter;
+//import lombok.RequiredArgsConstructor;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;
 //
 //import java.util.List;
@@ -9,10 +9,10 @@ import lombok.RequiredArgsConstructor;
 //import java.util.stream.Collectors;
 //
 //import static project.capstone.studyPal.data.models.Permission.*;
-
+//
 //@RequiredArgsConstructor
-public enum Role {
-    STUDENT
+//public enum Role {
+////    STUDENT
 //    STUDENT(
 //            Set.of(
 //            STUDENT_READ,
@@ -32,4 +32,4 @@ public enum Role {
 //        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
 //        return authorities;
 //    }
-}
+//}

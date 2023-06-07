@@ -42,26 +42,44 @@ public class AppUser {
 
     private boolean isEnabled = false;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinTable(
-            joinColumns = @JoinColumn(
-                    name = "app_user_id",
-                    foreignKey = @ForeignKey(foreignKeyDefinition = "foreign key (app_user_id) references app_user(id)")
-            ),inverseJoinColumns = @JoinColumn(
-                    name = "notes_id",
-            foreignKey = @ForeignKey(foreignKeyDefinition = "foreign key (notes_id) references notes(id)"))
-    )
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//@OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
+//@JoinTable(
+//        joinColumns = @JoinColumn(
+//                name = "app_user_id",
+//                foreignKey = @ForeignKey(
+//                        foreignKeyDefinition = "foreign key (app_user_id) references app_user(id) ON DELETE CASCADE"
+//                )),
+//        inverseJoinColumns = @JoinColumn(
+//                name = "notes_id",
+//                foreignKey = @ForeignKey(
+//                        foreignKeyDefinition = "foreign key (notes_id) references note(id) ON DELETE CASCADE"
+//                ))
+//)
     private List<Note> notes;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Shelf shelf = new Shelf();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+//    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true)
+//   @JoinTable(
+//           joinColumns = @JoinColumn(
+//                   name = "app_user_id",
+//                   foreignKey = @ForeignKey(
+//                   foreignKeyDefinition = "foreign key (app_user_id) references app_user(id) ON DELETE CASCADE"
+//                   )),
+//           inverseJoinColumns = @JoinColumn(
+//                   name = "study_plans_id",
+//                   foreignKey = @ForeignKey(
+//                   foreignKeyDefinition = "foreign key (study_plans_id) references study_plan(id) ON DELETE CASCADE"
+//                   ))
+//   )
     private List<StudyPlan> studyPlans;
 
 //    @NotNull(message = "Image cannot be null")
     private String profileImage;
 
-    @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+//    @Enumerated(EnumType.STRING)
+//    private Role role = Role.STUDENT;
 }
