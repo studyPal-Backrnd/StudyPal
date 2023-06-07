@@ -9,10 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-
-public class UpdateNoteRequest {
-    Long userId;
+public class GetNoteRequest {
+    private Long userId;
     private Long noteId;
-    private String updateTitle;
-    private String updateBody;
 }

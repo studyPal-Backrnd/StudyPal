@@ -80,6 +80,6 @@ public class AppUser {
 //    @NotNull(message = "Image cannot be null")
     private String profileImage;
 
-    @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
+//    @Enumerated(EnumType.STRING)
+//    private Role role = Role.STUDENT;
 }
