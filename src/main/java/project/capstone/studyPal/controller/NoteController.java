@@ -10,7 +10,8 @@ import project.capstone.studyPal.dto.request.CreateNoteRequest;
 import project.capstone.studyPal.dto.request.UpdateNoteRequest;
 import project.capstone.studyPal.service.studyPalService.noteService.NoteService;
 @AllArgsConstructor
-@RestController("api/v1/studypal/note")
+@RequestMapping("api/v1/studypal/note")
+@RestController
 public class NoteController {
 
     private final NoteService noteService;

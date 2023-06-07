@@ -132,6 +132,53 @@
 			<version>1.1.4</version>
 		</dependency>
 
+		<!-- JSON Processing API -->
+		<dependency>
+			<groupId>javax.json.bind</groupId>
+			<artifactId>javax.json.bind-api</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<!-- Google API Client -->
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.31.0</version>
+		</dependency>
+
+		<!-- Google HTTP Client -->
+		<dependency>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client</artifactId>
+			<version>1.39.1</version>
+		</dependency>
+		<dependency>
+			<groupId>project.capstone</groupId>
+			<artifactId>studyPal</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.api.client</groupId>
+			<artifactId>google-api-data-books-v1</artifactId>
+			<version>1.0.10-alpha</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-books</artifactId>
+			<version>v1-rev20230203-2.0.0</version>
+		</dependency>
+		<!-- For parsing JSON responses -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<!-- For making HTTP requests asynchronously -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
 
 	</dependencies>
 

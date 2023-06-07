@@ -1,6 +1,7 @@
 package project.capstone.studyPal.service.studyPalService.scheduleService;
 
 import lombok.AllArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import project.capstone.studyPal.data.models.Schedule;
 import project.capstone.studyPal.data.repository.ScheduleRepository;
@@ -20,7 +21,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
     @Override
-    public Schedule createASchedule(CreateScheduleRequest createScheduleRequest) throws DateTimeException {
+    public Schedule createASchedule(@NotNull CreateScheduleRequest createScheduleRequest) throws DateTimeException {
         validateDateTime(createScheduleRequest.getStartDateTime());
         validateDateTime(createScheduleRequest.getEndDateTime());
         Schedule schedule = new Schedule();
@@ -30,7 +31,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         return schedule;
     }
 
-    private void validateDateTime(LocalDateTime dateTime) {
+    private void validateDateTime(@NotNull LocalDateTime dateTime) {
         if(dateTime.isBefore(LocalDateTime.now()))
             throw new DateTimeException("Date time cannot be in the past");
     }
