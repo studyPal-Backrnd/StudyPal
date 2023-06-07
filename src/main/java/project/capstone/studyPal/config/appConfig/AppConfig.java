@@ -3,12 +3,15 @@ package project.capstone.studyPal.config.appConfig;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.reactive.function.client.WebClient;
 import project.capstone.studyPal.config.security.util.JwtUtil;
 import project.capstone.studyPal.dto.request.EmailNotificationRequest;
 import project.capstone.studyPal.dto.response.Token;
@@ -74,6 +77,11 @@ public class AppConfig {
     @Bean
     public GoogleBookConfig googleBookConfig() {
         return new GoogleBookConfig(booksApiKey, booksUrl);
+    }
+
+    @Bean
+    public WebClient webClient() {
+        return WebClient.builder().baseUrl(booksUrl).build();
     }
 
     @Bean
