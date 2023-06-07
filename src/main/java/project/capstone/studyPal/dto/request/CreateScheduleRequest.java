@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Setter
 public class CreateScheduleRequest {
 
-    @Pattern(message = "The purpose can only be letters with minimal numbers", regexp = "^(?:[a-zA-Z]*[0-9]){0,3}[a-zA-Z]+[a-zA-Z0-9]*$")
     private String purpose;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;

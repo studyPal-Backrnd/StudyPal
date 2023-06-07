@@ -9,6 +9,7 @@ import project.capstone.studyPal.data.models.StudyPlan;
 import project.capstone.studyPal.data.repository.StudyPlanRepository;
 import project.capstone.studyPal.dto.request.CreateScheduleRequest;
 import project.capstone.studyPal.dto.request.CreateStudyPlanRequest;
+import project.capstone.studyPal.dto.request.GetStudyPlanRequest;
 import project.capstone.studyPal.dto.request.UpdateStudyPlanRequest;
 import project.capstone.studyPal.exception.DateTimeException;
 import project.capstone.studyPal.exception.LogicException;
@@ -17,6 +18,7 @@ import project.capstone.studyPal.service.studyPalService.scheduleService.Schedul
 import project.capstone.studyPal.service.studyPalService.userService.UserService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,62 +31,72 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     private final UserService userService;
 
     @Override
-    public String createStudyPlan(@NotNull CreateStudyPlanRequest createStudyPlanRequest) throws DateTimeException {
+    public String createStudyPlan(@NotNull CreateStudyPlanRequest createStudyPlanRequest){
         AppUser foundUser = userService.getUserById(createStudyPlanRequest.getUserId());
-        if (!(foundUser.isEnabled()))
-            throw new LogicException("User is not enabled");
-        else {
-            validateStudyPlanDate(createStudyPlanRequest.getStartDate());
-            validateStudyPlanDate(createStudyPlanRequest.getEndDate());
-            StudyPlan studyPlan = new StudyPlan();
-            studyPlan.setTitle(createStudyPlanRequest.getTitle());
-            studyPlan.setDescription(createStudyPlanRequest.getDescription());
-            Set<Schedule> savedSchedules = getCreatedSchedules(createStudyPlanRequest.getScheduleRequests());
-            studyPlan.setSchedules(savedSchedules);
-            studyPlan.setCreatedDate(createStudyPlanRequest.getStartDate());
-            studyPlan.setEndDate(createStudyPlanRequest.getEndDate());
-            foundUser.getStudyPlans().add(studyPlan);
-            userService.updateUser(foundUser);
-            return "Study plan created";
+        StudyPlan studyPlan = new StudyPlan();
+        studyPlan.setTitle(createStudyPlanRequest.getTitle());
+        studyPlan.setDescription(createStudyPlanRequest.getDescription());
+        Set<Schedule> savedSchedules = getCreatedSchedules(createStudyPlanRequest.getScheduleRequests());
+        studyPlan.setSchedules(savedSchedules);
+        foundUser.getStudyPlans().add(studyPlan);
+        userService.updateUser(foundUser);
+        return "Study plan created";
+    }
+
+    @Override
+    public StudyPlan getStudyPlanById(GetStudyPlanRequest request) {
+        AppUser user = userService.getUserById(request.getUserId());
+        List<StudyPlan> studyPlans = user.getStudyPlans();
+        for(StudyPlan studyPlan : studyPlans){
+            if(studyPlan.getStudyPlanId().equals(request.getStudyPlanId()))
+                return studyPlan;
         }
-    }
-
-    private void validateStudyPlanDate(LocalDate date) {
-        if (date.isBefore(LocalDate.now()))
-            throw new DateTimeException("Date cannot be in the past");
-    }
-
-    @Override
-    public StudyPlan getStudyPlanById(Long studyPlanId) {
-        return studyPlanRepository.findById(studyPlanId).orElseThrow(
-                () -> new NotFoundException("Study plan not found or study deleted"));
+        throw new RuntimeException("Study plan not found");
+//        return studyPlanRepository.findById(studyPlanId).orElseThrow(
+//                () -> new NotFoundException("Study plan not found or study deleted"));
     }
 
     @Override
-    public String updateStudyPlan(@NotNull UpdateStudyPlanRequest updateStudyPlanRequest) throws DateTimeException {
-        StudyPlan foundStudyPlan = getStudyPlanById(updateStudyPlanRequest.getStudyPlanId());
-        foundStudyPlan.setTitle(updateStudyPlanRequest.getTitle());
-        foundStudyPlan.setDescription(updateStudyPlanRequest.getDescription());
-        foundStudyPlan.setCreatedDate(updateStudyPlanRequest.getStartDate());
-        foundStudyPlan.setEndDate(updateStudyPlanRequest.getEndDate());
+    public String updateStudyPlan(UpdateStudyPlanRequest updateStudyPlanRequest){
+        AppUser foundUser = userService.getUserById(updateStudyPlanRequest.getUserId());
+        List<StudyPlan> studyPlans = foundUser.getStudyPlans();
         Set<Schedule> savedSchedules = getCreatedSchedules(updateStudyPlanRequest.getCreateScheduleRequests());
-        foundStudyPlan.setSchedules(savedSchedules);
-        foundStudyPlan.setCreatedDate(updateStudyPlanRequest.getStartDate());
-        foundStudyPlan.setEndDate(updateStudyPlanRequest.getEndDate());
-        studyPlanRepository.save(foundStudyPlan);
-        return "Study plan updated";
+        for(StudyPlan studyPlan : studyPlans){
+            if(studyPlan.getStudyPlanId().equals(updateStudyPlanRequest.getStudyPlanId())){
+                studyPlan.setTitle(updateStudyPlanRequest.getTitle());
+                studyPlan.setDescription(updateStudyPlanRequest.getDescription());
+                studyPlan.setSchedules(savedSchedules);
+                studyPlan.setUpdatedAt(LocalDateTime.now());
+                userService.updateUser(foundUser);
+                return "Study plan updated";
+            }
+        }
+        throw new RuntimeException("Error update study plan");
+    }
+    @Override
+    public List<StudyPlan> getAllStudyPlans(Long userId) {
+        AppUser foundUser = userService.getUserById(userId);
+        return foundUser.getStudyPlans();
+//        return studyPlanRepository.findAll();
     }
 
     @Override
-    public String deleteStudyPlan(Long studyPlanId) {
-        studyPlanRepository.deleteById(studyPlanId);
-        return "Study plan deleted";
+    public void deleteStudyPlan(GetStudyPlanRequest request) {
+        AppUser foundUser = userService.getUserById(request.getUserId());
+        List<StudyPlan> studyPlans = foundUser.getStudyPlans();
+        studyPlans.removeIf(studyPlan -> studyPlan.getStudyPlanId().equals(request.getStudyPlanId()));
+        userService.updateUser(foundUser);
+//        studyPlanRepository.deleteById(studyPlanId);
+//        return "Study plan deleted";
     }
 
     @Override
-    public List<StudyPlan> getAllStudyPlans() {
-        return studyPlanRepository.findAll();
+    public void deleteAllStudyPlans(Long userId) {
+        AppUser foundUser = userService.getUserById(userId);
+        foundUser.getStudyPlans().clear();
+        userService.updateUser(foundUser);
     }
+
 
     @Override
     public Long studyPlanCount() {

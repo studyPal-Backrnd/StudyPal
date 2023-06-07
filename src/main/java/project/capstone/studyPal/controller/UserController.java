@@ -36,6 +36,12 @@ public class UserController {
  return ResponseEntity.ok(response);
 }
 
+@GetMapping("get/{id}")
+public ResponseEntity<?> getUserById(@Valid @PathVariable Long id){
+  AppUser user = userService.getUserById(id);
+  return ResponseEntity.status(HttpStatus.OK).body(user);
+}
+
 // <<<<<<< davidBranch
 // @GetMapping("get/email")
 //  public ResponseEntity<?> getUserByEmail(@Valid @RequestParam String email){
