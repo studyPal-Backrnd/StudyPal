@@ -33,10 +33,11 @@ public class AppConfig {
     private String apiKey;
     @Value("${cloudinary.api.secret}")
     private String apiSecret;
-//    @Value("${google.books.url}")
-//    private String booksUrl;
-//    @Value("${google.books.api.key}")
-//    private String booksApiKey;
+
+    @Value("${google.books.url}")
+    private String booksUrl;
+    @Value("${google.books.api.key}")
+    private String booksApiKey;
 
 
 
@@ -72,8 +73,13 @@ public class AppConfig {
     }
 
     @Bean
-    public Token Token() {
+    public Token token() {
         return new Token();
+    }
+
+    @Bean
+    public GoogleBookConfig googleBookConfig() {
+        return new GoogleBookConfig(booksApiKey, booksUrl);
     }
 
     @Bean

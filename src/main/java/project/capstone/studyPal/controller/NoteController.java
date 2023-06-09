@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/studypal/note/")
+
 public class NoteController {
     private final NoteService noteService;
     @PostMapping("create")
