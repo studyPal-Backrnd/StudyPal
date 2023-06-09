@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import project.capstone.studyPal.dto.response.BookItem;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,5 +12,5 @@ import lombok.Setter;
 @Setter
 public class ResourceMaterialRequest {
     private Long userId;
-    private String title;
+    private BookItem bookItem;
 }
