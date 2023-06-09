@@ -12,11 +12,13 @@ import project.capstone.studyPal.dto.request.DeleteResourceRequest;
 import project.capstone.studyPal.dto.request.ResourceMaterialRequest;
 import project.capstone.studyPal.dto.response.ApiResponse;
 import project.capstone.studyPal.dto.response.BookItem;
+import project.capstone.studyPal.exception.LogicException;
 import project.capstone.studyPal.service.studyPalService.resourceMaterialService.ResourceMaterialService;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -44,6 +46,7 @@ public class ResourceMaterialController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> removeResourceMaterial(@Valid @PathVariable(value = "id") Long resourceId, @Valid @RequestBody @NotNull DeleteResourceRequest deleteResourceRequest) {
+        if (!Objects.equals(resourceId, deleteResourceRequest.getResourceId())) throw new LogicException("Bad request");
         resourceMaterialService.removeResourceMaterial(deleteResourceRequest.getUserId(), deleteResourceRequest.getResourceId());
         return ResponseEntity.status(HttpStatus.OK).body("Resource material successfully deleted");
     }
