@@ -1,8 +1,9 @@
 package project.capstone.studyPal.service.googleService;
 
-import project.capstone.studyPal.dto.response.BookSearchResponse;
-import reactor.core.publisher.Mono;
+import project.capstone.studyPal.dto.response.BookItem;
+
+import java.util.List;
 
 public interface GoogleBookService {
-    public Mono<BookSearchResponse> searchBooksByTitle(String title);
+    public List<BookItem> searchBooksByTitle(String title);
 }

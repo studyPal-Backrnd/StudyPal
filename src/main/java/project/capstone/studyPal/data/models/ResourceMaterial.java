@@ -8,7 +8,9 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 //import org.hibernate.annotations.CreationTimestamp;
 
+import java.awt.print.Book;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,9 +22,14 @@ public class ResourceMaterial {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+
+    @Column(length = 10_000)
     private String description;
-    private String author;
+
+    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    private List<String> authors;
     private String link;
     @CreationTimestamp
-    private LocalDateTime dateAdded = LocalDateTime.now();
- }
+    private final LocalDateTime dateAdded = LocalDateTime.now();
+
+}
