@@ -17,7 +17,7 @@ import project.capstone.studyPal.dto.request.VerifyRequest;
 import project.capstone.studyPal.dto.response.UserResponse;
 import project.capstone.studyPal.service.studyPalService.userService.UserService;
 @AllArgsConstructor
-@RequestMapping("/api/v1/studypal/")
+@RequestMapping("/api/v1/studypal/user")
 @RestController
 @CrossOrigin(origins = "*")
 public class UserController {
@@ -43,15 +43,15 @@ public ResponseEntity<?> getUserById(@Valid @PathVariable Long id){
 }
 
 // <<<<<<< davidBranch
-// @GetMapping("get/email")
-//  public ResponseEntity<?> getUserByEmail(@Valid @RequestParam String email){
+ @GetMapping("get/email")
+  public ResponseEntity<?> getUserByEmail(@Valid @RequestParam String email){
 // =======
 // @GetMapping("{name}")
 //  public ResponseEntity<?> getUserByEmail(@Valid @PathVariable(value = "name") String name, @Valid @RequestParam String email){
 // >>>>>>> inDev
-//   AppUser foundUser = userService.getUserByEmail(email);
-//   return ResponseEntity.status(HttpStatus.OK).body(foundUser);
-// }
+   AppUser foundUser = userService.getUserByEmail(email);
+   return ResponseEntity.status(HttpStatus.OK).body(foundUser);
+ }
 
  @PostMapping("sendmail")
  public ResponseEntity<?> sendEmail(@Valid @RequestParam String emailAddress){

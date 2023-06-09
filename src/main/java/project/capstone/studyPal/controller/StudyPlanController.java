@@ -17,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("api/v1/studypal/studyplan")
 @RestController
+@CrossOrigin(origins = "*")
 public class StudyPlanController {
 
     private final StudyPlanService studyPlanService;
