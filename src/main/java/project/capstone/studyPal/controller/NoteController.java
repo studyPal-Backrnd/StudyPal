@@ -28,6 +28,12 @@ public class NoteController {
         Note note = noteService.getNoteById(request);
         return ResponseEntity.status(HttpStatus.OK).body(note);
     }
+
+    @GetMapping("get/{note_id}")
+    public ResponseEntity<?> getNote(@Valid @PathVariable Long note_id){
+        Note note = noteService.getById(note_id);
+        return ResponseEntity.status(HttpStatus.OK).body(note);
+    }
     @PutMapping("update")
     public  ResponseEntity<?> updateNote(@Valid @RequestBody UpdateNoteRequest request){
         String response = noteService.updateNote(request);

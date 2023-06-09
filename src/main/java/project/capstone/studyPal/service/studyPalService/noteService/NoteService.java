@@ -10,6 +10,7 @@ import java.util.List;
 public interface NoteService {
     String createNote(CreateNoteRequest createNoteRequest);
     Note getNoteById(GetNoteRequest getNoteRequest);
+    Note getById(Long noteId);
     List<Note> getAllNotes(Long userId);
     Long noteCount();
     String updateNote(UpdateNoteRequest updateNoteRequest);

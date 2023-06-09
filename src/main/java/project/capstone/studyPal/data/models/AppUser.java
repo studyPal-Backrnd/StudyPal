@@ -9,10 +9,14 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 //import org.hibernate.annotations.CreationTimestamp;
 
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +27,7 @@ import static project.capstone.studyPal.util.StudyPalUtils.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class AppUser {
+public class AppUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -57,7 +61,6 @@ public class AppUser {
 //                ))
 //)
     private List<Note> notes;
-
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Shelf shelf = new Shelf();
 
@@ -80,6 +83,46 @@ public class AppUser {
 //    @NotNull(message = "Image cannot be null")
     private String profileImage;
 
-//    @Enumerated(EnumType.STRING)
-//    private Role role = Role.STUDENT;
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.STUDENT;
+
+
+
+
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
 }

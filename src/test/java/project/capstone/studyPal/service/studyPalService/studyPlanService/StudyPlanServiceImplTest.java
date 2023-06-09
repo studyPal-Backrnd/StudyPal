@@ -51,8 +51,8 @@ class StudyPlanServiceImplTest {
         createScheduleRequest2.setEndDateTime(LocalDateTime.now().plusMinutes(90L));
 
         updateStudyPlanRequest.setCreateScheduleRequests(Set.of(createScheduleRequest2));
-        updateStudyPlanRequest.setStartDate(LocalDate.now().plusDays(2L));
-        updateStudyPlanRequest.setEndDate(LocalDate.now().plusDays(4L));
+//        updateStudyPlanRequest.setStartDate(LocalDate.now().plusDays(2L));
+//        updateStudyPlanRequest.setEndDate(LocalDate.now().plusDays(4L));
     }
 
     @Test

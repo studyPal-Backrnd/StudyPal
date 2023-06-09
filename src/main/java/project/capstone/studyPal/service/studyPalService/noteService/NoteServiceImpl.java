@@ -47,6 +47,12 @@ public class NoteServiceImpl implements NoteService{
     }
 
     @Override
+    public Note getById(Long noteId) {
+        return noteRepository.findById(noteId)
+                .orElseThrow(()-> new NotFoundException("Note found exception"));
+    }
+
+    @Override
     public List<Note> getAllNotes(Long userId) {
         AppUser foundUser = userService.getUserById(userId);
         return foundUser.getNotes();

@@ -31,7 +31,7 @@ public class StudyPlanServiceImpl implements StudyPlanService {
     private final UserService userService;
 
     @Override
-    public String createStudyPlan(@NotNull CreateStudyPlanRequest createStudyPlanRequest){
+    public String createStudyPlan(CreateStudyPlanRequest createStudyPlanRequest){
         AppUser foundUser = userService.getUserById(createStudyPlanRequest.getUserId());
         StudyPlan studyPlan = new StudyPlan();
         studyPlan.setTitle(createStudyPlanRequest.getTitle());
@@ -103,7 +103,7 @@ public class StudyPlanServiceImpl implements StudyPlanService {
         return studyPlanRepository.count();
     }
 
-    private Set<Schedule> getCreatedSchedules(@NotNull Set<CreateScheduleRequest> createScheduleRequests) {
+    private Set<Schedule> getCreatedSchedules(Set<CreateScheduleRequest> createScheduleRequests) {
         Set<Schedule> newSchedules = new HashSet<>();
         for (CreateScheduleRequest newSchedule : createScheduleRequests) {
             Schedule createdSchedule = scheduleService.createASchedule(newSchedule);

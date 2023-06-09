@@ -1,4 +1,4 @@
-//package project.capstone.studyPal.data.models;
+package project.capstone.studyPal.data.models;
 //
 //import lombok.Getter;
 //import lombok.RequiredArgsConstructor;
@@ -11,8 +11,8 @@
 //import static project.capstone.studyPal.data.models.Permission.*;
 //
 //@RequiredArgsConstructor
-//public enum Role {
-////    STUDENT
+public enum Role {
+    STUDENT
 //    STUDENT(
 //            Set.of(
 //            STUDENT_READ,
@@ -32,4 +32,4 @@
 //        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
 //        return authorities;
 //    }
-//}
+}

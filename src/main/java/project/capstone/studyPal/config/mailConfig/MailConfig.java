@@ -1,4 +1,4 @@
-package project.capstone.studyPal.config.appConfig;
+package project.capstone.studyPal.config.mailConfig;
 
 
 import lombok.AllArgsConstructor;
