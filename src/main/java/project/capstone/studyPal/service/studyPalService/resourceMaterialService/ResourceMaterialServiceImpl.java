@@ -48,6 +48,7 @@ public class ResourceMaterialServiceImpl implements ResourceMaterialService{
 //        resourceMaterial.setAuthors(resourceMaterialRequest.getBookItem().getVolumeInfo().getAuthors());
 //        resourceMaterial.setLink(resourceMaterialRequest.getBookItem().getVolumeInfo().getInfoLink());
 
+        if (user.getShelf().getResourceMaterials().contains(resourceMaterial)) throw new LogicException("Resource material cannot be duplicated");
         ResourceMaterial savedResourceMaterial = resourceMaterialRepository.save(resourceMaterial);
         user.getShelf().getResourceMaterials().add(savedResourceMaterial);
         userService.updateUser(user);
