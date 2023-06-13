@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
         appUser.setPassword(newPassword);
         updateUser(appUser);
     }
-String name = " ";
+
     @Override
     public void sendResetPasswordMail(String email) {
         AppUser user;
